@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Brain, Users, Calendar, MessageCircle, Shield, ArrowRight, Menu, X } from 'lucide-react';
 import Vector from '../assets/Vector.png';
+import { useNavigate } from 'react-router-dom';
 export default function MentalHealthHomepage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
 
   const services = [
     {
@@ -52,6 +53,7 @@ export default function MentalHealthHomepage() {
               <a href="#about" className="text-gray-700 transition-colors hover:text-[#6C8F5E]" >About</a>
               <a href="#contact" className="text-gray-700 transition-colors hover:text-[#6C8F5E]" >Contact</a>
               <button className="text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-95 transition-all" 
+              onClick={()=>navigate('/register')}
                       style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
                 Get Started
               </button>
@@ -70,7 +72,9 @@ export default function MentalHealthHomepage() {
               <a href="#about" className="block text-slate-700 hover:text-[#6C8F5E]" >About</a>
               <a href="#contact" className="block text-slate-700 hover:text-[#6C8F5E]" >Contact</a>
               <button className="w-full text-white px-6 py-2 rounded-full" 
+              onClick={()=>navigate('/register')}
                       style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
+                        
                 Get Started
               </button>
             </div>
@@ -120,21 +124,21 @@ export default function MentalHealthHomepage() {
                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
                 <div className="space-y-3 sm:space-y-4 md:space-y-6">
                   <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Shield className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" style={{ color: '#6C8F5E' }} />
+                    <Shield className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#6C8F5E' }} />
                     <div>
                       <h3 className="font-semibold text-gray-900 text-sm sm:text-base">100% Confidential</h3>
                       <p className="text-xs sm:text-sm text-gray-600">Your privacy is our priority</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Users className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" style={{ color: '#A8C699' }} />
+                    <Users className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#A8C699' }} />
                     <div>
                       <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Licensed Professionals</h3>
                       <p className="text-xs sm:text-sm text-gray-600">Certified and experienced</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Heart className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0" style={{ color: '#A8C690' }} />
+                    <Heart className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#A8C690' }} />
                     <div>
                       <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Compassionate Care</h3>
                       <p className="text-xs sm:text-sm text-gray-600">Supportive and understanding</p>
