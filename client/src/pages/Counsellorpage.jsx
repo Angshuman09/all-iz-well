@@ -89,7 +89,7 @@ const CounsellorPortal = () => {
           className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm cursor-pointer transition-all hover:shadow-md"
           onClick={() => setCurrentPage('dashboard')}
         >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
             <FileText className="w-6 h-6 sm:w-7 sm:h-7 text-[#2C3E50]" />
           </div>
           <h3 className="text-lg sm:text-xl font-semibold text-[#2C3E50] mb-1 sm:mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>Dashboard</h3>
@@ -100,7 +100,7 @@ const CounsellorPortal = () => {
           className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm cursor-pointer transition-all hover:shadow-md"
           onClick={() => setCurrentPage('reports')}
         >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
             <AlertCircle className="w-6 h-6 sm:w-7 sm:h-7 text-[#2C3E50]" />
           </div>
           <h3 className="text-lg sm:text-xl font-semibold text-[#2C3E50] mb-1 sm:mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>Reports</h3>
@@ -111,7 +111,7 @@ const CounsellorPortal = () => {
           className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm cursor-pointer transition-all hover:shadow-md"
           onClick={() => setCurrentPage('appointments')}
         >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mb-3 sm:mb-4">
             <Calendar className="w-6 h-6 sm:w-7 sm:h-7 text-[#2C3E50]" />
           </div>
           <h3 className="text-lg sm:text-xl font-semibold text-[#2C3E50] mb-1 sm:mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>Appointments</h3>
@@ -123,7 +123,7 @@ const CounsellorPortal = () => {
         <h3 className="text-base sm:text-lg font-semibold text-[#2C3E50] mb-4 sm:mb-6" style={{ fontFamily: 'Poppins, sans-serif' }}>Appointment Status</h3>
         <div className="grid grid-cols-3 gap-3 sm:gap-6">
           <div className="text-center cursor-pointer" onClick={() => setShowBookingsModal(true)}>
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mx-auto mb-2 sm:mb-3">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center mx-auto mb-2 sm:mb-3">
               <span className="text-2xl sm:text-3xl font-bold text-[#2C3E50]" style={{ fontFamily: 'Poppins, sans-serif' }}>12</span>
             </div>
             <p className="text-xs sm:text-sm font-medium text-[#2C3E50]" style={{ fontFamily: 'Poppins, sans-serif' }}>Bookings</p>
@@ -186,7 +186,7 @@ const CounsellorPortal = () => {
               <div key={apt.id} className="p-3 sm:p-4 rounded-xl bg-gray-50 border border-[#E2E2E2]">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center shrink-0">
                       <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#2C3E50]" />
                     </div>
                     <div>
@@ -279,7 +279,7 @@ const CounsellorPortal = () => {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center shrink-0">
                       <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#2C3E50]" />
                     </div>
                     <div>
@@ -290,7 +290,7 @@ const CounsellorPortal = () => {
                       <p className="text-xs text-gray-500" style={{ fontFamily: 'Roboto, sans-serif' }}>Booked on {student.bookedOn}</p>
                     </div>
                   </div>
-                  <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ${
+                  <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium shrink-0 ${
                     student.severity === 'severe' ? 'bg-[#FDE8E8] text-[#D64545]' : 'bg-[#FEF3E7] text-[#E67E22]'
                   }`} style={{ fontFamily: 'Poppins, sans-serif' }}>
                     {student.severity === 'severe' ? 'Pending' : 'Approved'}
@@ -302,7 +302,7 @@ const CounsellorPortal = () => {
                     {!isRevealed && (
                       <button 
                         onClick={() => handleRevealName(student.id)}
-                        className="w-full py-2 px-3 bg-gradient-to-r from-[#D8EAD9] to-[#C9E1D1] text-[#2C3E50] rounded-lg text-xs font-medium transition-all hover:opacity-90 flex items-center justify-center gap-2" 
+                        className="w-full py-2 px-3 bg-linear-to-r from-[#D8EAD9] to-[#C9E1D1] text-[#2C3E50] rounded-lg text-xs font-medium transition-all hover:opacity-90 flex items-center justify-center gap-2" 
                         style={{ fontFamily: 'Poppins, sans-serif' }}
                       >
                         <User className="w-4 h-4" />
@@ -327,7 +327,7 @@ const CounsellorPortal = () => {
                   </div>
                 ) : (
                   <div className="bg-[#FEF3E7] border border-[#F1C40F] rounded-lg p-3 flex items-start gap-2">
-                    <Clock className="w-4 h-4 text-[#F1C40F] flex-shrink-0 mt-0.5" />
+                    <Clock className="w-4 h-4 text-[#F1C40F] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-xs font-medium text-[#2C3E50]" style={{ fontFamily: 'Poppins, sans-serif' }}>Available after 1 week</p>
                       <p className="text-xs text-gray-600 mt-0.5" style={{ fontFamily: 'Roboto, sans-serif' }}>You can reveal this student's identity after Nov 26, 2025</p>
@@ -351,7 +351,7 @@ const CounsellorPortal = () => {
           <div key={session.id} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
             <div className="flex items-start justify-between mb-2 sm:mb-3">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center shrink-0">
                   <User className="w-5 h-5 sm:w-6 sm:h-6 text-[#2C3E50]" />
                 </div>
                 <div>
@@ -359,7 +359,7 @@ const CounsellorPortal = () => {
                   <p className="text-xs sm:text-sm text-gray-600" style={{ fontFamily: 'Roboto, sans-serif' }}>{session.date}</p>
                 </div>
               </div>
-              <button className="text-xs sm:text-sm text-[#2C3E50] hover:underline flex-shrink-0" style={{ fontFamily: 'Poppins, sans-serif' }}>View Details</button>
+              <button className="text-xs sm:text-sm text-[#2C3E50] hover:underline shrink-0" style={{ fontFamily: 'Poppins, sans-serif' }}>View Details</button>
             </div>
             <p className="text-xs sm:text-sm text-gray-700 leading-relaxed" style={{ fontFamily: 'Roboto, sans-serif' }}>{session.summary}</p>
           </div>
@@ -439,7 +439,7 @@ const CounsellorPortal = () => {
   const SessionModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-4" onClick={() => setShowSessionModal(false)}>
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-        <div className="bg-gradient-to-r from-[#D8EAD9] to-[#C9E1D1] p-6">
+        <div className="bg-linear-to-r from-[#D8EAD9] to-[#C9E1D1] p-6">
           <h3 className="text-xl font-semibold text-[#2C3E50] flex items-center gap-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
             <FileText className="w-6 h-6" />
             Session in Progress
@@ -448,7 +448,7 @@ const CounsellorPortal = () => {
         <div className="p-6 sm:p-8 space-y-4">
           <div className="bg-gray-50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1] flex items-center justify-center">
                 <User className="w-6 h-6 text-[#2C3E50]" />
               </div>
               <div>
@@ -500,7 +500,7 @@ const CounsellorPortal = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#D8EAD9] to-[#C9E1D1]">
+    <div className="min-h-screen bg-linear-to-br from-[#D8EAD9] to-[#C9E1D1]">
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">

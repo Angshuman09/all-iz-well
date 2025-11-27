@@ -13,8 +13,17 @@ const adminSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'College',
         required: true,
+    },
+    counsellorDetails:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Counsellor',
+        }
+    ],
+    collegeStamps:{
+        type: String,
+        required: true
     }
-
 });
 
 export const Admin = mongoose.model('Admin', adminSchema);

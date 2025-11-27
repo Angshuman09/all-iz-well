@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const counsellorSchema = new mongoose.Schema({
-    Name:{
+    fUllName:{
         type: String,
         required: true
     },
@@ -13,7 +13,6 @@ const counsellorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
     gender:{
         type: String,
         enum: ['male','female', 'other'],
@@ -22,7 +21,8 @@ const counsellorSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'College',
         required: true,
-    }
+    },
+
     
 });
 

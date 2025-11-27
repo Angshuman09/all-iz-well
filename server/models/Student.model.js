@@ -13,8 +13,24 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'College',
         required: true,
-    }
-    
+    },
+    gender:{
+        type: String,
+        enum: ['male','female', 'other'],
+        required: true,
+    },
+    age:{
+        type: Number,
+        required: true,
+    },
+    collegeId:{
+        type: String,
+        required: true,
+    },
+    phoneNUmber:{
+        type: String,
+        required: true,
+    }  
 });
 
 export const Admin = mongoose.model('Admin', studentSchema);
