@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const counsellorSchema = new mongoose.Schema({
+    Name:{
+        type: String,
+        required: true
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
