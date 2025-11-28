@@ -21,9 +21,7 @@ const counsellorSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'College',
         required: true,
-    },
-
-    
+    }
 });
 
-export const Admin = mongoose.model('Admin', counsellorSchema);
+export const Counsellor = mongoose.model('Counsellor', counsellorSchema);

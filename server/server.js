@@ -1,7 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {connectDb} from './lib/db.js';   
-import userAuthROutes from './routes/auth.routes.js';
+import userAuthRoutes from './routes/auth.routes.js';
+import studentRoutes from './routes/student.routes.js';
+import adminRoutes from './routes/admin.routes.js'
 import cookieParser from 'cookie-parser';
 import cors from "cors";
 
@@ -19,7 +21,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.use('/api/v1/auth', userAuthROutes);
+app.use('/api/v1/auth', userAuthRoutes);
+app.use('/api/v1/student', studentRoutes);
+app.use('/api/v1/admin', adminRoutes)
 
 app.get('/health', (req, res)=>{
     res.send('Server is healthy');

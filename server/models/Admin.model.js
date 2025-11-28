@@ -14,15 +14,14 @@ const adminSchema = new mongoose.Schema({
         ref: 'College',
         required: true,
     },
-    counsellorDetails:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Counsellor',
-        }
-    ],
     collegeStamps:{
         type: String,
         required: true
+    },
+    TermnsAndConditions:{
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 

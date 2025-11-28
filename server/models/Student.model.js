@@ -23,14 +23,11 @@ const studentSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    collegeId:{
-        type: String,
-        required: true,
-    },
-    phoneNUmber:{
-        type: String,
-        required: true,
-    }  
+    semester:{
+        type: Number,
+        enum: [1,2,3,4,5,6,7,8],
+        required: true
+    }
 });
 
-export const Admin = mongoose.model('Admin', studentSchema);
+export const Student = mongoose.model('Student', studentSchema);

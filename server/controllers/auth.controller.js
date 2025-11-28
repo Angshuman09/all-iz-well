@@ -65,7 +65,8 @@ export const registerController = async (req, res) => {
 
         res.status(201).json({
             message: 'User registered successfully',
-            userId: newUser._id
+            userId: newUser._id,
+            role: newUser.role
         });
 
     } catch (error) {

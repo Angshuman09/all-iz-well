@@ -1,21 +1,17 @@
-import {User} from "../models/User.model.js";
-
-export const getData = async (req,res)=>{
-    const {userId} = req.body;
-    if(!userId){
-        return res.status(400).json({success:false,message:"userId not found"});
-    }
-
+export const getData = async (req, res) => {
     try {
-        const user = await User.findById(userId);
+        // User is already attached by middleware
+        const user = req.user;
+        
         res.status(200).json({
-            success:true,
-            userData:{
-                email:user.email,
+            success: true,
+            userData: {
+                email: user.email,
                 role: user.role
             }
-        })
+        });
     } catch (error) {
-        res.status(401).json({success:false,message:"getting problem to get data"});
+        console.error("Error in getData:", error);
+        res.status(500).json({ success: false, message: "Error retrieving data" });
     }
 }

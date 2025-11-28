@@ -3,18 +3,28 @@ import Layout from './layout/Layout'
 import Homepage from './pages/Homepage'
 import CounsellorPortal from './pages/Counsellorpage'
 import RegistrationPage from './pages/Registrationpage'
+import {Toaster} from 'react-hot-toast'
+import {Loginpage} from './pages/Loginpage'
+import StudentForm from './pages/StudentForm'
+import CollegeForm from './pages/AdminForm'
+import StudentDashboard from './pages/StudentDashboard'
 
 export const App = () => {
   return (
-    <Routes>
+    <div className='w-full h-screen'>
+      <Routes>
       <Route path="/" element={<Layout><Homepage/></Layout>} />
-      <Route path="/login" element={<Layout></Layout>} />
+      <Route path="/login" element={<Layout><Loginpage/></Layout>} />
       <Route path="/register" element={<Layout><RegistrationPage/></Layout>} />
       <Route path="/admin-dashboard" element={<Layout></Layout>} />
       <Route path="/counsellor-dashboard" element={<Layout><CounsellorPortal/></Layout>} />
-      <Route path="/superadmin-dashboard" element={<Layout></Layout>} />
-      <Route path="/continue" element={<div className='bg-green-300 w-full h-screen flex justify-center items-center'>will be continue</div>} />
+      <Route path="/techTeam-dashboard" element={<Layout></Layout>} />
+      <Route path="/student-form" element={<StudentForm/>} />
+      <Route path="/admin-form" element={<CollegeForm/>} />
+      <Route path='/student-dashboard' element={<StudentDashboard/>}/>
     </Routes>
+    <Toaster/>
+    </div>
   )
 }
 

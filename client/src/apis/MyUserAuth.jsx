@@ -1,9 +1,9 @@
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 
-
+//Authentication - register, login, email verification
 export const useCreateMyUser = () => {
     const createMyUserRequest = async (user)=>{
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
@@ -73,3 +73,107 @@ export const useVerifyMyUser = () => {
     }
 }
 
+export const useLoginMyUser = () => {
+    const loginMyUserRequest = async (loginData)=>{
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to login user");
+        }
+        return response.json();
+    }
+        const {
+        mutateAsync: loginMyUser,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: loginMyUserRequest,
+    });
+    
+    return {
+        loginMyUser,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+
+// student details
+
+export const useStudentForm = ()=>{
+    const studentForm = async (user)=>{
+        const response = await fetch(`${API_BASE_URL}/api/v1/student`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user),
+            credentials: 'include',
+        })
+
+        if(!response.ok){
+            throw new Error("Failed to register student form");
+        }
+
+        return response.json();
+    }
+
+       const {
+        mutateAsync: studentform,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: studentForm,
+    });
+    
+    return {
+        studentform,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+
+export const useGetUsers = () => {
+
+    const fetchUsers = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/get-data`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch users");
+
+        return response.json();
+    };
+
+    const {
+        data: users,
+        isLoading,
+        isError,
+        isSuccess,
+        refetch,
+    } = useQuery({
+        queryKey: ["users"],
+        queryFn: fetchUsers,
+    });
+
+    return {
+        users,
+        isLoading,
+        isError,
+        isSuccess,
+        refetch
+    };
+};
