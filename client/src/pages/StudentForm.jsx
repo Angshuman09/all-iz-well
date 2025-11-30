@@ -2,9 +2,11 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useStudentForm } from "../apis/MyUserAuth";
+import { useStudentForm } from "../apis/Student";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useGetActiveColleges } from "../apis/Colleges";
+import { useState } from "react";
 // ---------------- Schema ----------------
 const formSchema = z.object({
   collegeName: z.string().min(1, "Select a college"),
@@ -20,7 +22,7 @@ const formSchema = z.object({
 });
 
 // ---------------- Component ----------------
-export default function App() {
+export default function StudentForm() {
     const navigate = useNavigate();
   const {
     register,
@@ -31,6 +33,7 @@ export default function App() {
   });
 
   const {studentform, isPending} = useStudentForm();
+  const {activeColleges} = useGetActiveColleges();
 //const {collegeName, gender, age, collegeCode, semester} = req.body;
   const onSubmit = async (data) => {
     console.log("Form Data:", data);
@@ -45,7 +48,7 @@ export default function App() {
         toast.error('some errors occurs');
     }else{
         toast.success('registration successful');
-        navigate('/')
+        navigate('/student-dashbaord');
     }
 
   };
@@ -72,9 +75,15 @@ export default function App() {
           className={`w-full pl-10 pr-4 py-1 border rounded-lg outline-none transition appearance-none bg-white`}
         >
           <option value="">Select College</option>
-          <option value="ABC College">ABC College</option>
+          {/* <option value="ABC College">ABC College</option>
           <option value="XYZ Institute">XYZ Institute</option>
-          <option value="Tech University">Tech University</option>
+          <option value="Tech University">Tech University</option> */}
+          {activeColleges?.data?.length === 0 ? (
+        <option value="" disabled>No college found</option>
+      ) : (
+        activeColleges?.data?.map((college) => (
+          <option key={college._id} value={college.name}>{college.name}</option>
+        )))}
         </select>
         {errors.collegeName && (
           <p className="text-red-600 text-[13px] font-roboto mt-1">

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Building2, CheckCircle, XCircle, Clock, LogOut, LayoutDashboard, Users, Settings, Menu, X } from 'lucide-react';
-import { useGetInactiveColleges, useGetRejectedColleges, useLogoutMyUser } from '../apis/MyUserAuth';
+import { useLogoutMyUser } from '../apis/MyUserAuth';
+import { useGetActiveColleges, useGetRejectedColleges, useGetInactiveColleges } from '../apis/Colleges';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { CollegeCard } from '../components/CollegeCard';
 import { StatCard } from '../components/StatCard';
-import { useGetActiveColleges } from '../apis/Colleges';
 
 export default function SuperAdminDashboard() {
   const {logoutMyUser, isPending} = useLogoutMyUser();
@@ -59,7 +59,7 @@ export default function SuperAdminDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-linear-to-r from-[#CBDAC8] to-[#D4E7ED]">
       {/* Sidebar */}
       <aside className={`${sidebarOpen ? 'w-64' : 'w-0'} bg-[#6C8F5E] text-white transition-all duration-300 overflow-hidden`}>
         <div className="p-6">

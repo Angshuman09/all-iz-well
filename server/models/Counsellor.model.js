@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const counsellorSchema = new mongoose.Schema({
-    fUllName:{
+    fullName:{
         type: String,
         required: true
     },

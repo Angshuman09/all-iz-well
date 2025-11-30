@@ -2,171 +2,209 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAdminForm } from "../apis/Admin";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 // ----------------- ZOD VALIDATION SCHEMA -----------------
 const formSchema = z.object({
   collegeName: z.string().min(2, "College name is required"),
-  collegeCode: z
-    .string()
-    .min(2, "College code is required")
-    .regex(/^[A-Z0-9-]+$/, "Only uppercase letters, numbers, and hyphens allowed"),
-  aisheCode: z
-    .string()
-    .min(2, "AISHE code is required")
-    .regex(/^[A-Z]-\d{4,}$/, "Invalid AISHE code format (e.g., U-1234)"),
+  collegeCode: z.string().min(2, "College code is required"),
+  aisheCode: z.string().min(2, "AISHE code is required"),
   institutionType: z.string().min(1, "Select institution type"),
   address: z.string().min(5, "Address is required"),
   phone: z
     .string()
-    .min(10, "Phone must be 10 digits")
-    .max(10, "Phone must be exactly 10 digits"),
+    .length(10, "Phone must be exactly 10 digits"),
   stamp: z
     .any()
-    .refine((file) => file?.length === 1, "Upload college stamp (JPEG only)")
-    .refine(
-      (file) => file && ["image/jpeg", "image/jpg"].includes(file[0]?.type),
-      "Only JPEG format allowed"
-    ),
+    .refine((f) => f?.length === 1, "Upload only one file"),
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  }),
 });
 
 // ----------------- COMPONENT -----------------
-export default function CollegeForm() {
+export default function AdminForm() {
   const [stampName, setStampName] = useState("");
+  const { adminForm, isPending } = useAdminForm();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data) => {
-    const prepared = {
-      ...data,
-      stampFile: data.stamp[0],
-    };
-    console.log("College Registered:", prepared);
+  const accepted = watch("termsAccepted");
+
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    formData.append("collegeName", data.collegeName);
+    formData.append("collegeCode", data.collegeCode);
+    formData.append("AISHEcode", data.aisheCode);
+    formData.append("InstitutionType", data.institutionType);
+    formData.append("address", data.address);
+    formData.append("phoneNumber", data.phone);
+    formData.append("imageFile", data.stamp[0]);
+    formData.append("TermnsAndConditions", data.termsAccepted);
+
+    try {
+      const response = await adminForm(formData);
+      toast.success("college registration successful, you will be inform on your email");
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+      navigate('/')
+    }
   };
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center bg-green-100 px-4">
+    <div className="min-h-screen w-full flex justify-center items-start bg-gradient-to-br from-green-50 to-green-100 py-12 px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg"
+        className="w-full max-w-4xl bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-gray-200"
       >
-        {/* Heading */}
-        <h1 className="font-poppins font-bold text-[28px] text-[#2C3E50] mb-1">
-          Register a College
-        </h1>
-        <p className="font-poppins text-[16px] text-black/70 mb-6">
-          IQAC Admin — Add a verified institution to the system.
-        </p>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-[#2C3E50]">Register a College</h1>
+          <p className="text-gray-600 mt-2">
+            IQAC Admin — Add a verified institution to the system.
+          </p>
+        </div>
 
-        {/* College Name */}
-        <label className="block font-roboto text-[16px]">College Name</label>
-        <input
-          {...register("collegeName")}
-          type="text"
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg
-                     focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
-        />
-        {errors.collegeName && (
-          <p className="text-red-600 text-sm mt-1">{errors.collegeName.message}</p>
-        )}
+        {/* Form Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* College Name */}
+          <div>
+            <label className="font-medium">College Name</label>
+            <input
+              {...register("collegeName")}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 outline-none"
+            />
+            {errors.collegeName && (
+              <p className="text-red-600 text-sm mt-1">{errors.collegeName.message}</p>
+            )}
+          </div>
 
-        {/* College Code (ADDED) */}
-        <label className="block mt-4 font-roboto text-[16px]">College Code (Generated by Admin)</label>
-        <input
-          {...register("collegeCode")}
-          type="text"
-          placeholder="e.g., CLG-2025-OD"
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg
-                     uppercase focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
-        />
-        {errors.collegeCode && (
-          <p className="text-red-600 text-sm mt-1">{errors.collegeCode.message}</p>
-        )}
+          {/* College Code */}
+          <div>
+            <label className="font-medium">College Code</label>
+            <input
+              {...register("collegeCode")}
+              placeholder="CLG-2025-OD"
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl uppercase focus:ring-2 focus:ring-green-600 outline-none"
+            />
+            {errors.collegeCode && (
+              <p className="text-red-600 text-sm mt-1">{errors.collegeCode.message}</p>
+            )}
+          </div>
 
-        {/* AISHE Code */}
-        <label className="block mt-4 font-roboto text-[16px]">AISHE Code</label>
-        <input
-          {...register("aisheCode")}
-          type="text"
-          placeholder="e.g., U-1234"
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg 
-                     focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
-        />
-        {errors.aisheCode && (
-          <p className="text-red-600 text-sm mt-1">{errors.aisheCode.message}</p>
-        )}
+          {/* AISHE Code */}
+          <div>
+            <label className="font-medium">AISHE Code</label>
+            <input
+              {...register("aisheCode")}
+              placeholder="U-1234"
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 outline-none"
+            />
+            {errors.aisheCode && (
+              <p className="text-red-600 text-sm mt-1">{errors.aisheCode.message}</p>
+            )}
+          </div>
 
-        {/* Institution Type */}
-        <label className="block mt-4 font-roboto text-[16px]">Institution Type</label>
-        <select
-          {...register("institutionType")}
-          className={`w-full pl-10 pr-4 py-3 border rounded-lg outline-none transition appearance-none bg-white`}
-        >
-          <option value="">Select Type</option>
-          <option value="Government">Government</option>
-          <option value="Private">Private</option>
-          <option value="Autonomous">Autonomous</option>
-          <option value="Deemed">Deemed University</option>
-        </select>
-        {errors.institutionType && (
-          <p className="text-red-600 text-sm mt-1">{errors.institutionType.message}</p>
-        )}
+          {/* Institution Type */}
+          <div>
+            <label className="font-medium">Institution Type</label>
+            <select
+              {...register("institutionType")}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-green-600 outline-none"
+            >
+              <option value="">Select Type</option>
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
+              <option value="Autonomous">Autonomous</option>
+              <option value="Deemed">Deemed University</option>
+            </select>
+            {errors.institutionType && (
+              <p className="text-red-600 text-sm mt-1">{errors.institutionType.message}</p>
+            )}
+          </div>
 
-        {/* Address */}
-        <label className="block mt-4 font-roboto text-[16px]">Address</label>
-        <textarea
-          {...register("address")}
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg h-24
-                     focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
-        />
-        {errors.address && (
-          <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
-        )}
+          {/* Phone */}
+          <div>
+            <label className="font-medium">College Phone Number</label>
+            <input
+              {...register("phone")}
+              placeholder="10-digit number"
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-600 outline-none"
+            />
+            {errors.phone && (
+              <p className="text-red-600 text-sm mt-1">{errors.phone.message}</p>
+            )}
+          </div>
 
-        {/* Phone Number */}
-        <label className="block mt-4 font-roboto text-[16px]">College Phone Number</label>
-        <input
-          {...register("phone")}
-          type="text"
-          placeholder="10-digit number"
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg 
-                     focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
-        />
-        {errors.phone && (
-          <p className="text-red-600 text-sm mt-1">{errors.phone.message}</p>
-        )}
+          {/* Stamp Upload */}
+          <div>
+            <label className="font-medium">College Stamp (JPEG Only)</label>
+            <input
+              {...register("stamp")}
+              type="file"
+              onChange={(e) => setStampName(e.target.files[0]?.name || "")}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl bg-white cursor-pointer focus:ring-2 focus:ring-green-600 outline-none"
+            />
+            {stampName && (
+              <p className="text-gray-700 text-sm mt-1">Selected: {stampName}</p>
+            )}
+            {errors.stamp && (
+              <p className="text-red-600 text-sm mt-1">{errors.stamp.message}</p>
+            )}
+          </div>
 
-        {/* College Stamp Upload */}
-        <label className="block mt-4 font-roboto text-[16px]">College Stamp (JPEG Only)</label>
-        <input
-          {...register("stamp")}
-          type="file"
-          accept=".jpeg,.jpg"
-          onChange={(e) => setStampName(e.target.files[0]?.name || "")}
-          className="w-full mt-1 p-3 border border-gray-400 rounded-lg 
-                     bg-white cursor-pointer focus:outline-none focus:ring-2
-                     focus:ring-[#2C3E50]"
-        />
-        {stampName && (
-          <p className="text-sm text-gray-700 mt-1">Selected: {stampName}</p>
-        )}
-        {errors.stamp && (
-          <p className="text-red-600 text-sm mt-1">{errors.stamp.message}</p>
+          {/* Full Address */}
+          <div className="md:col-span-2">
+            <label className="font-medium">Address</label>
+            <textarea
+              {...register("address")}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-xl h-28 focus:ring-2 focus:ring-green-600 outline-none"
+            ></textarea>
+            {errors.address && (
+              <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Terms & Conditions */}
+        <div className="flex items-center gap-2 mt-6">
+          <input type="checkbox" {...register("termsAccepted")} />
+          <label className="text-sm">
+            I agree to the{" "}
+            <a href="/terms" className="text-blue-700 underline">
+              Terms & Conditions
+            </a>
+          </label>
+        </div>
+        {errors.termsAccepted && (
+          <p className="text-red-600 text-sm mt-1">{errors.termsAccepted.message}</p>
         )}
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full mt-6 py-3 bg-[#6C8F5E] text-white 
-                     font-poppins font-semibold text-[16px] rounded-lg 
-                     hover:scale-[1.02] transition-all"
+          disabled={!accepted || isPending}
+          className={`mt-10 w-full py-4 text-lg font-semibold rounded-xl transition-all shadow-md 
+            ${
+              accepted
+                ? "bg-[#6C8F5E] text-white hover:bg-green-600"
+                : "bg-gray-400 text-white cursor-not-allowed"
+            }`}
         >
-          Register College
+          {isPending ? "Submitting..." : "Register College"}
         </button>
       </form>
     </div>

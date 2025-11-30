@@ -27,7 +27,8 @@ export const adminFormController = async (req, res) => {
       AISHEcode, 
       InstitutionType, 
       address, 
-      phoneNumber 
+      phoneNumber,
+      TermnsAndConditions
     } = req.body;
 
     // Validate required fields
@@ -107,7 +108,8 @@ export const adminFormController = async (req, res) => {
     const admin = new Admin({
       phoneNumber,
       collegeName: college._id, // Reference to college
-      collegeStamps: collegeStampUrl // Store the uploaded image URL
+      collegeStamps: collegeStampUrl, // Store the uploaded image URL
+      TermnsAndConditions
     });
 
     await admin.save();

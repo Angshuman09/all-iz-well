@@ -37,7 +37,7 @@ export default function MentalHealthHomepage() {
   ];
 //D4E7ED
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #D4E7ED 0%, #CBDAC8 50%, #CBDAC8 100%)' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #D4E7ED 0%, #CBDAC8 50%, #D4E7ED 100%)' }}>
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,7 +104,9 @@ export default function MentalHealthHomepage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button className="text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:shadow-xl transform hover:scale-105 transition-all flex items-center justify-center space-x-2 text-sm sm:text-base" 
-                        style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
+                        style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}
+                        onClick={()=>navigate('/register')}
+                        >
                   <span>Start Your Journey</span>
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
