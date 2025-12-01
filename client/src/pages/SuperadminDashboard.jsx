@@ -13,16 +13,6 @@ export default function SuperAdminDashboard() {
   const {inactiveColleges} = useGetInactiveColleges();
   const {rejectedColleges} = useGetRejectedColleges();
 
-  // const activeCollegess = Array.isArray(activeColleges?.data) ? activeColleges.data : [];
-  // const inactiveCollegess = Array.isArray(inactiveColleges?.data) ? inactiveColleges.data : [];
-  // const rejectedCollegess = Array.isArray(rejectedColleges?.data) ? rejectedColleges.data : [];
-  // console.log(activeCollegess);
-
-  // const checking = async ()=>{
-  //   const check = await inactivecollege;
-  //   console.log(check);
-  // }
-  // checking();
   const activeCount = activeColleges?.count || activeColleges?.data?.length || 0;
   const inactiveCount = inactiveColleges?.count || inactiveColleges?.data?.length || 0;
   const rejectedCount = rejectedColleges?.count || rejectedColleges?.data?.length || 0;
@@ -30,24 +20,6 @@ export default function SuperAdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  // const [colleges, setColleges] = useState([
-  //   { id: 1, name: 'Stanford University', location: 'California, USA', status: 'active', students: 17000, dateApplied: '2024-01-15' },
-  //   { id: 2, name: 'MIT', location: 'Massachusetts, USA', status: 'active', students: 11500, dateApplied: '2024-01-20' },
-  //   { id: 3, name: 'Oxford University', location: 'Oxford, UK', status: 'active', students: 24000, dateApplied: '2024-02-01' },
-  //   { id: 4, name: 'Cambridge College', location: 'Cambridge, UK', status: 'pending', students: 19000, dateApplied: '2024-03-10' },
-  //   { id: 5, name: 'Harvard Extension', location: 'Massachusetts, USA', status: 'rejected', students: 15000, dateApplied: '2024-03-15' },
-  //   { id: 6, name: 'Tech Institute', location: 'California, USA', status: 'pending', students: 8000, dateApplied: '2024-03-20' },
-  // ]);
-
-  // const handleStatusChange = (id, newStatus) => {
-  //   setColleges(colleges.map(college => 
-  //     college.id === id ? { ...college, status: newStatus } : college
-  //   ));
-  // };
-
-  // const activeColleges = colleges.filter(c => c.status === 'active');
-  // const inactiveColleges = colleges.filter(c => c.status === 'pending' || c.status === 'rejected');
-
 
   const onLogoutHandler = async ()=>{
     try {

@@ -36,6 +36,7 @@ export default function StudentForm() {
   const {activeColleges} = useGetActiveColleges();
 //const {collegeName, gender, age, collegeCode, semester} = req.body;
   const onSubmit = async (data) => {
+    try {
     console.log("Form Data:", data);
     const response = await studentform({
         collegeName: data.collegeName,
@@ -44,13 +45,13 @@ export default function StudentForm() {
         collegeCode: data.collegeCode,
         semester: data.semester
     })
-    if(!response.ok){
-        toast.error('some errors occurs');
-    }else{
-        toast.success('registration successful');
-        navigate('/student-dashbaord');
-    }
 
+    toast.success('registration successful');
+    navigate('/student-dashboard');
+    } catch (error) {
+        toast.error('some errors occurs');
+        console.log(`error: ${error}`);
+    }
   };
 
   return (

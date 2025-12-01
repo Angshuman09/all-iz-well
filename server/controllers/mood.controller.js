@@ -10,7 +10,7 @@ export const setMoodController = async (req, res) => {
             return res.status(400).json({ error: "Mood is required" });
         }
 
-        const allowedMoods = ["very sad", "sad", "neutral", "happy", "very happy"];
+        const allowedMoods =[-2, -1, 0, 1, 2];
         if (!allowedMoods.includes(mood)) {
             return res.status(400).json({ error: "Invalid mood value" });
         }

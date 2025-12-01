@@ -10,6 +10,8 @@ import CollegeForm from './pages/AdminForm'
 import StudentDashboard from './pages/StudentDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import SuperAdminDashboard from './pages/SuperadminDashboard'
+import MoodTracker from './pages/MoodTracker'
+import Assessment from './pages/Assessment'
 
 export const App = () => {
   return (
@@ -24,6 +26,11 @@ export const App = () => {
       <Route path="/student-form" element={<StudentForm/>} />
       <Route path="/admin-form" element={<CollegeForm/>} />
       <Route path='/student-dashboard' element={<StudentDashboard/>}/>
+
+      {/* feature */}
+
+      <Route path='/mood' element={<MoodTracker/>}/>
+      <Route path='/test' element={<Assessment/>}/>
     </Routes>
     <Toaster/>
     </div>

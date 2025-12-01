@@ -102,7 +102,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveSection('counsellors')}
             className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
               activeSection === 'counsellors'
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                ? 'bg-linear-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
