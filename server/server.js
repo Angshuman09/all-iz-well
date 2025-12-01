@@ -5,7 +5,7 @@ import userAuthRoutes from './routes/auth.routes.js';
 import studentRoutes from './routes/student.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import collegeRoutes from './routes/college.routes.js'
-import moodRoutes from './routes/mood.routes.js'
+import featuresRoutes from './routes/features.routes.js'
 import cookieParser from 'cookie-parser';
 import cors from "cors";
 
@@ -27,7 +27,7 @@ app.use('/api/v1/auth', userAuthRoutes);
 app.use('/api/v1/student', studentRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/college', collegeRoutes);
-app.use('/api/v1/mood', moodRoutes);
+app.use('/api/v1/features', featuresRoutes);
 
 app.get('/health', (req, res)=>{
     res.send('Server is healthy');

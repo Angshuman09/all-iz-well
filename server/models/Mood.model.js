@@ -7,11 +7,10 @@ const moodSchmma = new mongoose.Schema({
         required: true,
     },
     mood: {
-        type: String,
-        enum: ["very sad", "sad", "neutral", "happy", "very happy"],
+        type: Number,
+        enum: [-2, -1, 0, 1, 2],
         required: true
     }
 },{timestamps: true});
-
 
 export const Mood = mongoose.model('Mood', moodSchmma);

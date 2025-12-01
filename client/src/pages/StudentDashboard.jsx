@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { Heart, FileText, BookOpen, MessageCircle, Users, Calendar, AlertCircle, Activity, Brain, Sparkles } from 'lucide-react';
 import Vector from '../assets/Vector.png'
+import { useNavigate } from 'react-router-dom';
+import { useGetStudentData } from '../apis/Student';
+
 export default function StudentDashboard() {
   const [activeCard, setActiveCard] = useState(null);
+  const {studentData, isLoading, refetch} = useGetStudentData();
 
+  const name = studentData?.name || studentData?.data?.name;
+  const college = studentData?.college || studentData?.data?.college;
+  const navigate = useNavigate();
   const features = [
     {
       id: 'test',
@@ -69,8 +76,8 @@ export default function StudentDashboard() {
       textColor: 'text-red-600'
     },
     {
-      id: 'booking',
-      title: 'Booking',
+      id: 'mood-graph',
+      title: 'Mood analytics',
       description: 'Schedule appointments',
       icon: Calendar,
       color: 'from-teal-500 to-cyan-500',
@@ -99,10 +106,12 @@ export default function StudentDashboard() {
             </div>
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-right">
-                <p className="text-sm font-medium text-gray-700">Welcome back!</p>
+                {isLoading? ( <p className="text-sm font-medium text-gray-700">loading...</p>) : (
+                  <p className="text-sm font-medium text-gray-700">{name || ''}</p>
+                )}
                 <p className="text-xs text-gray-500">How are you feeling today?</p>
               </div>
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-semibold">
+              <div className="w-10 h-10 bg-linear-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-semibold">
                 S
               </div>
             </div>
@@ -114,7 +123,7 @@ export default function StudentDashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Your Wellness Hub</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">{college}</h2>
           <p className="text-gray-600">Take care of your mental health, one step at a time.</p>
         </div>
 
@@ -127,8 +136,9 @@ export default function StudentDashboard() {
                 key={feature.id}
                 className={`group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 ${
                   activeCard === feature.id ? 'ring-4 ring-purple-400' : ''
-                }`}
-                onClick={() => setActiveCard(feature.id)}
+                }`
+              }
+                onClick={() => navigate(`/${feature.id}`)}
                 onMouseEnter={() => setActiveCard(feature.id)}
                 onMouseLeave={() => setActiveCard(null)}
               >
@@ -137,7 +147,7 @@ export default function StudentDashboard() {
                 </div>
                 <h3 className="text-lg font-bold text-gray-800 mb-1">{feature.title}</h3>
                 <p className="text-sm text-gray-600">{feature.description}</p>
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${feature.color} rounded-b-2xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
+                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r ${feature.color} rounded-b-2xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
               </div>
             );
           })}
@@ -145,7 +155,7 @@ export default function StudentDashboard() {
 
         {/* SOS Button - Prominent */}
         <div className="fixed bottom-8 right-8 z-50">
-          <button className="group relative bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 animate-pulse hover:animate-none transform hover:scale-105">
+          <button className="group relative bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 animate-pulse hover:animate-none transform hover:scale-105">
             <AlertCircle className="w-6 h-6" />
             <span className="font-bold text-lg">SOS</span>
             <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full animate-ping"></div>
@@ -156,17 +166,17 @@ export default function StudentDashboard() {
         <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 shadow-lg">
           <h3 className="text-xl font-bold text-gray-800 mb-4">Your Progress</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl p-4">
+            <div className="bg-linear-to-br from-purple-100 to-purple-50 rounded-xl p-4">
               <p className="text-sm text-purple-600 font-medium mb-1">Mood Entries</p>
               <p className="text-3xl font-bold text-purple-700">24</p>
               <p className="text-xs text-purple-500 mt-1">This month</p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl p-4">
+            <div className="bg-linear-to-br from-blue-100 to-blue-50 rounded-xl p-4">
               <p className="text-sm text-blue-600 font-medium mb-1">Journal Entries</p>
               <p className="text-3xl font-bold text-blue-700">12</p>
               <p className="text-xs text-blue-500 mt-1">This month</p>
             </div>
-            <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4">
+            <div className="bg-linear-to-br from-green-100 to-green-50 rounded-xl p-4">
               <p className="text-sm text-green-600 font-medium mb-1">Sessions</p>
               <p className="text-3xl font-bold text-green-700">3</p>
               <p className="text-xs text-green-500 mt-1">Completed</p>

@@ -1,5 +1,5 @@
-import { Counsellor } from "../models/Counsellor.model";
-import { User } from "../models/User.model";
+import { Counsellor } from "../models/Counsellor.model.js";
+import { User } from "../models/User.model.js";
 
 export const addCounsellorController = async (req, res) => {
     try {
@@ -40,10 +40,8 @@ export const addCounsellorController = async (req, res) => {
             fullName,
             phoneNumber,
             gender,
-
+            collegeName: req.collegeName
         })
-
-        //thinking have some issue with how to get the collegeName of the counsellor
 
     } catch (error) {
         console.log(`error in add counsellor controller: ${error}`);

@@ -5,9 +5,9 @@ import { acceptCollege, getActiveColleges, getInactiveColleges, getRejectedColle
 
 const router = express.Router();
 
-router.get('/active', authMiddleware, isSuperAdmin, getActiveColleges);
-router.get('/inactive', authMiddleware, isSuperAdmin, getInactiveColleges);
-router.get('/rejected', authMiddleware, isSuperAdmin, getRejectedColleges);
+router.get('/active', authMiddleware, getActiveColleges);
+router.get('/inactive', authMiddleware, getInactiveColleges);
+router.get('/rejected', authMiddleware, getRejectedColleges);
 router.patch('/accept/:collegeId', authMiddleware, isSuperAdmin, acceptCollege);
 router.patch('/reject/:collegeId', authMiddleware, isSuperAdmin, rejectCollege);
 
