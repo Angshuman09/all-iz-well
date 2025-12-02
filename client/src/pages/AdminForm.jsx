@@ -65,7 +65,7 @@ export default function AdminForm() {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center items-start bg-gradient-to-br from-green-50 to-green-100 py-12 px-4">
+    <div className="min-h-screen w-full flex justify-center items-start bg-linear-to-br from-green-50 to-green-100 py-12 px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-4xl bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-gray-200"

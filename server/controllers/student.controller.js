@@ -56,6 +56,7 @@ export const studentFormController = async (req, res) => {
 
 export const getStudentData = async (req, res) => {
     try {
+        console.log(req.userId);
         const student = await Student.findOne({ userId: req.userId })
             .populate("collegeName", "name");
 

@@ -48,13 +48,13 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-2 rounded-xl">
+              <div className="bg-linear-to-br from-indigo-600 to-purple-600 p-2 rounded-xl">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveSection('mood')}
             className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
               activeSection === 'mood'
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                ? 'bg-linear-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveSection('posts')}
             className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
               activeSection === 'posts'
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                ? 'bg-linear-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl p-6 text-white shadow-lg">
+              <div className="bg-linear-to-br from-green-500 to-emerald-500 rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-center justify-between mb-2">
                   <TrendingUp className="w-8 h-8" />
                   <span className="text-2xl font-bold">63%</span>
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                 <p className="text-green-100 text-sm">Positive Moods</p>
                 <p className="text-white font-semibold mt-1">Trending Up</p>
               </div>
-              <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl p-6 text-white shadow-lg">
+              <div className="bg-linear-to-br from-yellow-500 to-orange-500 rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-center justify-between mb-2">
                   <AlertCircle className="w-8 h-8" />
                   <span className="text-2xl font-bold">20%</span>
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
                 <p className="text-yellow-100 text-sm">Anxious Students</p>
                 <p className="text-white font-semibold mt-1">Needs Attention</p>
               </div>
-              <div className="bg-gradient-to-br from-red-500 to-pink-500 rounded-xl p-6 text-white shadow-lg">
+              <div className="bg-linear-to-br from-red-500 to-pink-500 rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-center justify-between mb-2">
                   <AlertCircle className="w-8 h-8" />
                   <span className="text-2xl font-bold">17%</span>
@@ -216,7 +216,7 @@ export default function AdminDashboard() {
               <h2 className="text-2xl font-bold text-gray-800">Counsellor Management</h2>
               <button
                 onClick={() => setShowAddCounsellor(!showAddCounsellor)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-lg shadow-lg transition-all duration-200 font-medium"
+                className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-lg shadow-lg transition-all duration-200 font-medium"
               >
                 <Plus className="w-5 h-5" />
                 Add Counsellor
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
                 <div key={counsellor.id} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                      <div className="w-16 h-16 bg-linear-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-xl font-bold">
                         {counsellor.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div>

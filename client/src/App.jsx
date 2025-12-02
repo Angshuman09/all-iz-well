@@ -12,6 +12,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import SuperAdminDashboard from './pages/SuperadminDashboard'
 import MoodTracker from './pages/MoodTracker'
 import Assessment from './pages/Assessment'
+import { CommunitySection } from './pages/CommunitySection'
 
 export const App = () => {
   return (
@@ -31,6 +32,7 @@ export const App = () => {
 
       <Route path='/mood' element={<MoodTracker/>}/>
       <Route path='/test' element={<Assessment/>}/>
+      <Route path='/community' element={<CommunitySection/>}/>
     </Routes>
     <Toaster/>
     </div>

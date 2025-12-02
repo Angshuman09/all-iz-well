@@ -22,38 +22,33 @@ export default function MoodTracker() {
     setMessage('');
   };
 
-  const handleSubmit = async () => {
-    if (selectedMood === null) {
-      setMessage('Please select a mood');
-      return;
-    }
+const handleSubmit = async () => {
+  if (selectedMood === null) {
+    setMessage('Please select a mood');
+    return;
+  }
 
-    setIsSubmitting(true);
-    setMessage('');
+  setIsSubmitting(true);
+  setMessage('');
 
-    try {
-      const response = studentMood({
-        mood: selectedMood
-      });
+  try {
+    console.log(typeof selectedMood)
+    const data = await studentMood({ mood: selectedMood });
 
-      const data = await response.json();
+    setMessage('Mood recorded successfully! 🎉');
+    setTimeout(() => {
+      setSelectedMood(null);
+      setMessage('');
+    }, 2000);
 
-      if (response.ok) {
-        setMessage('Mood recorded successfully! 🎉');
-        setTimeout(() => {
-          setSelectedMood(null);
-          setMessage('');
-        }, 2000);
-      } else {
-        setMessage(data.error || 'Failed to record mood');
-      }
-    } catch (error) {
-      setMessage('Network error. Please try again.');
-      console.error('Error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  } catch (error) {
+    setMessage(error?.message || 'Network error. Please try again.');
+    console.error('Error:', error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-linear-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
@@ -113,7 +108,7 @@ export default function MoodTracker() {
             w-full py-4 rounded-xl font-semibold text-white text-lg
             transition-all duration-200 transform
             ${selectedMood !== null && !isSubmitting
-              ? 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 hover:scale-105 shadow-lg'
+              ? 'bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 hover:scale-105 shadow-lg'
               : 'bg-gray-300 cursor-not-allowed'
             }
           `}
