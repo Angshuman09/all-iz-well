@@ -189,7 +189,7 @@ export const useGetAllPosts = () => {
 }
 
 export const useLikeThePost = () => {
-    const LikeThePost = async (postId) => {
+    const LikeThePost = async ({ postId }) => {
         const response = await fetch(`${API_BASE_URL}/api/v1/features/like/${postId}`, {
             method: 'POST',
             credentials: 'include',
@@ -219,10 +219,14 @@ export const useLikeThePost = () => {
     }
 }
 
-export const useReportThePost = ()=>{
-    const ReportThePost = async (postId)=>{
-        const response = await fetch(`${API_BASE_URL}/api/v1/features/report/${postId}`,{
-        method: 'POST',
+export const useReportThePost = () => {
+    const ReportThePost = async ({ postId, reason }) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/report/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reason }),
             credentials: 'include',
         })
 
@@ -250,15 +254,15 @@ export const useReportThePost = ()=>{
     }
 }
 
-export const useDeleteThePost = ()=>{
-    const DeleteThePost = async (postId)=>{
-    const response = await fetch(`${API_BASE_URL}/api/v1/features/${postId}`,{
-        method: 'DELETE',
+export const useDeleteThePost = () => {
+    const DeleteThePost = async (postId) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/${postId}`, {
+            method: 'DELETE',
             credentials: 'include',
         })
 
         if (!response.ok) {
-            throw new Error("Failed to report a post");
+            throw new Error("Failed to delete a post");
         }
 
         return response.json();
@@ -281,9 +285,10 @@ export const useDeleteThePost = ()=>{
     }
 }
 
-export const useGetTrendingTags = ()=>{
-    const GetTrendingTags = async ()=>{
-   const response = await fetch(`${API_BASE_URL}/api/v1/features/trending`, {
+
+export const useGetTrendingTags = () => {
+    const GetTrendingTags = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/trending`, {
             method: "GET",
             credentials: "include"
         })
@@ -311,6 +316,284 @@ export const useGetTrendingTags = ()=>{
         isSuccess,
         refetch
     };
+}
+
+//resources
+
+export const useAddQuote = () => {
+    const AddQuote = async (quote) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/addquotes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quote }),
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to add quote");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: addQuote,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: AddQuote,
+    });
+
+    return {
+        addQuote,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useDeleteQuote = () => {
+    const DeleteQuote = async (quote) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/deletequotes/${quote}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to delete quote");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: deleteQuote,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: DeleteQuote,
+    });
+
+    return {
+        deleteQuote,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useAddLink = () => {
+    const AddLink = async (link) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/addlinks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ link }),
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to add link");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: addLink,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: AddLink,
+    });
+
+    return {
+        addLink,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useDeleteLink = () => {
+    const DeleteLink = async (link) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/deletelinks/${link}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to delete link");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: deleteLink,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: DeleteLink,
+    });
+
+    return {
+        deleteLink,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useGetResources = () => {
+    const GetResources = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/resources`, {
+            method: "GET",
+            credentials: "include"
+        })
+
+        if (!response.ok) throw new Error("error in fetching resources");
+
+        return response.json();
+    }
+
+    const {
+        data: resources,
+        isLoading,
+        isError,
+        isSuccess,
+        refetch,
+    } = useQuery({
+        queryKey: ["resources"],
+        queryFn: GetResources,
+    });
+
+    return {
+        resources,
+        isLoading,
+        isError,
+        isSuccess,
+        refetch
+    };
+}
+
+//journal
+
+export const useCreateJournal = () => {
+    const CreateJournal = async (journal) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/journal`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(journal),
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to create journal");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: createJournal,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: CreateJournal,
+    });
+
+    return {
+        createJournal,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useGetJournal = () => {
+    const GetJournal = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/journal`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to get journal");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: getJournal,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: GetJournal,
+    });
+
+    return {
+        getJournal,
+        isPending,
+        isError,
+        isSuccess
+    }
+}
+
+export const useDeleteJournal = () => {
+    const DeleteJournal = async (journal) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/journal`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(journal),
+            credentials: 'include',
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to delete journal");
+        }
+
+        return response.json();
+    }
+
+    const {
+        mutateAsync: deleteJournal,
+        isPending,
+        isError,
+        isSuccess
+    } = useMutation({
+        mutationFn: DeleteJournal,
+    });
+
+    return {
+        deleteJournal,
+        isPending,
+        isError,
+        isSuccess
+    }
 }
 
 export const useGetStudentData = () => {

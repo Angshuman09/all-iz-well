@@ -16,15 +16,23 @@ import {
   useGetAllPosts,
   useLikeThePost,
   useReportThePost,
+  useGetStudentData,
 } from "../apis/Student";
 
 export const CommunitySection = () => {
   // Get current user from auth context (replace with actual)
-  const [currentUser] = useState({
-    id: "user_123",
-    anonymousName: "Gentle Panda",
-    userId: "user_123",
-  });
+  const { studentData } = useGetStudentData();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    if (studentData) {
+      setCurrentUser({
+        studentId: studentData.studentId,
+        anonymousName: studentData.name,
+        userId: studentData.userId,
+      });
+    }
+  }, [studentData]);
 
   const { createPost, isPending: isCreating } = useCreateMyPost();
   const { allPosts, isLoading, isError, refetch } = useGetAllPosts();
@@ -56,7 +64,7 @@ export const CommunitySection = () => {
 
   // Update local posts when API data changes
   useEffect(() => {
-    if (allPosts?.posts) {
+    if (allPosts?.posts && currentUser) {
       const transformedPosts = allPosts.posts.map((post) => {
         const hasReported = post.reports?.some(
           (report) => report.reportedBy === currentUser.userId
@@ -75,7 +83,7 @@ export const CommunitySection = () => {
       });
       setPosts(transformedPosts);
     }
-  }, [allPosts, currentUser.userId]);
+  }, [allPosts, currentUser]);
 
   // Format timestamp
   const formatTimestamp = (timestamp) => {
@@ -182,10 +190,10 @@ export const CommunitySection = () => {
         posts.map((post) =>
           post.id === postId
             ? {
-                ...post,
-                likes: post.liked ? post.likes - 1 : post.likes + 1,
-                liked: !post.liked,
-              }
+              ...post,
+              likes: post.liked ? post.likes - 1 : post.likes + 1,
+              liked: !post.liked,
+            }
             : post
         )
       );
@@ -197,10 +205,10 @@ export const CommunitySection = () => {
         posts.map((post) =>
           post.id === postId
             ? {
-                ...post,
-                likes: post.liked ? post.likes + 1 : post.likes - 1,
-                liked: !post.liked,
-              }
+              ...post,
+              likes: post.liked ? post.likes + 1 : post.likes - 1,
+              liked: !post.liked,
+            }
             : post
         )
       );
@@ -242,7 +250,7 @@ export const CommunitySection = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deletePost({ postId: deletingPostId });
+      await deletePost(deletingPostId);
       toast.success("Post deleted successfully");
       setShowDeleteModal(false);
       setDeletingPostId(null);
@@ -254,7 +262,9 @@ export const CommunitySection = () => {
     }
   };
 
-  const isOwnPost = (post) => post.userId === currentUser.userId;
+  // console.log(allPosts);
+
+  const isOwnPost = (post) => currentUser && post.userId === currentUser.studentId;
 
   const highlightHashtags = (text) => {
     return text.split(/(#\w+)/g).map((part, i) =>
@@ -319,7 +329,7 @@ export const CommunitySection = () => {
               <p className="text-sm text-gray-500 mt-1">
                 Posting as:{" "}
                 <span className="font-semibold text-purple-600">
-                  {currentUser.anonymousName}
+                  {currentUser?.anonymousName}
                 </span>
               </p>
             </div>
@@ -417,9 +427,8 @@ export const CommunitySection = () => {
                       <button
                         onClick={() => handleReportClick(post.id)}
                         disabled={post.reported}
-                        className={`text-gray-400 hover:text-red-500 transition-colors ${
-                          post.reported ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                        className={`text-gray-400 hover:text-red-500 transition-colors ${post.reported ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
                         title={post.reported ? "Already reported" : "Report post"}
                       >
                         <Flag
@@ -459,7 +468,7 @@ export const CommunitySection = () => {
 
       {/* --- CREATE MODAL --- */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative">
             <button
               onClick={() => setShowModal(false)}
@@ -475,7 +484,7 @@ export const CommunitySection = () => {
             <p className="text-gray-600 text-sm mb-4">
               Posting as:{" "}
               <span className="font-semibold text-purple-600">
-                {currentUser.anonymousName}
+                {currentUser?.anonymousName}
               </span>
             </p>
 
@@ -507,7 +516,7 @@ export const CommunitySection = () => {
 
       {/* --- REPORT MODAL --- */}
       {showReportModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 relative">
             <button
               onClick={() => setShowReportModal(false)}
@@ -537,11 +546,10 @@ export const CommunitySection = () => {
               {reportReasons.map((reason) => (
                 <label
                   key={reason}
-                  className={`flex items-center p-3 rounded-xl border-2 cursor-pointer transition-all ${
-                    reportReason === reason
-                      ? "border-red-300 bg-red-50"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
+                  className={`flex items-center p-3 rounded-xl border-2 cursor-pointer transition-all ${reportReason === reason
+                    ? "border-red-300 bg-red-50"
+                    : "border-gray-200 hover:border-gray-300"
+                    }`}
                 >
                   <input
                     type="radio"
@@ -586,7 +594,7 @@ export const CommunitySection = () => {
 
       {/* --- DELETE MODAL --- */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 relative">
             <button
               onClick={() => setShowDeleteModal(false)}

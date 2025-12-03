@@ -42,7 +42,7 @@ export const studentFormController = async (req, res) => {
             semester,
             displayName,
             isProfileComplete: true,
-            userId: req.userId  
+            userId: req.userId
         });
 
         await student.save();
@@ -56,7 +56,7 @@ export const studentFormController = async (req, res) => {
 
 export const getStudentData = async (req, res) => {
     try {
-        console.log(req.userId);
+        // console.log(req.userId);
         const student = await Student.findOne({ userId: req.userId })
             .populate("collegeName", "name");
 
@@ -67,6 +67,8 @@ export const getStudentData = async (req, res) => {
         return res.status(200).json({
             name: student.displayName,
             college: student.collegeName.name,
+            userId: student.userId,
+            studentId: student._id,
             message: "student data fetched successfully"
         });
 

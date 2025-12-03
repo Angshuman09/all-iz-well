@@ -6,6 +6,11 @@ const counsellorAvailabilitySchema = new mongoose.Schema({
         ref: 'Counsellor',
         required: true,
     },
+    college: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'College',
+        required: true,
+    },
     date: {
         type: Date,
         required: true
@@ -29,7 +34,7 @@ const counsellorAvailabilitySchema = new mongoose.Schema({
         },
         appointment: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Appointment'
+            ref: 'Booking'
         }
     }],
     isActive: {

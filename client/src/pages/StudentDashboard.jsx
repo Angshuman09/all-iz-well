@@ -6,7 +6,7 @@ import { useGetStudentData } from '../apis/Student';
 
 export default function StudentDashboard() {
   const [activeCard, setActiveCard] = useState(null);
-  const {studentData, isLoading, refetch} = useGetStudentData();
+  const { studentData, isLoading, refetch } = useGetStudentData();
 
   const name = studentData?.name || studentData?.data?.name;
   const college = studentData?.college || studentData?.data?.college;
@@ -76,9 +76,9 @@ export default function StudentDashboard() {
       textColor: 'text-red-600'
     },
     {
-      id: 'mood-graph',
+      id: 'analytics',
       title: 'Mood analytics',
-      description: 'Schedule appointments',
+      description: 'student mood analytics',
       icon: Calendar,
       color: 'from-teal-500 to-cyan-500',
       bgColor: 'bg-teal-50',
@@ -106,7 +106,7 @@ export default function StudentDashboard() {
             </div>
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-right">
-                {isLoading? ( <p className="text-sm font-medium text-gray-700">loading...</p>) : (
+                {isLoading ? (<p className="text-sm font-medium text-gray-700">loading...</p>) : (
                   <p className="text-sm font-medium text-gray-700">{name || ''}</p>
                 )}
                 <p className="text-xs text-gray-500">How are you feeling today?</p>
@@ -134,10 +134,9 @@ export default function StudentDashboard() {
             return (
               <div
                 key={feature.id}
-                className={`group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 ${
-                  activeCard === feature.id ? 'ring-4 ring-purple-400' : ''
-                }`
-              }
+                className={`group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 ${activeCard === feature.id ? 'ring-4 ring-purple-400' : ''
+                  }`
+                }
                 onClick={() => navigate(`/${feature.id}`)}
                 onMouseEnter={() => setActiveCard(feature.id)}
                 onMouseLeave={() => setActiveCard(null)}
