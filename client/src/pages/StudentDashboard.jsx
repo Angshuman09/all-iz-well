@@ -3,14 +3,17 @@ import { Heart, FileText, BookOpen, MessageCircle, Users, Calendar, AlertCircle,
 import Vector from '../assets/Vector.png'
 import { useNavigate } from 'react-router-dom';
 import { useGetStudentData } from '../apis/Student';
+import { useLogoutMyUser } from '../apis/MyUserAuth';
+import toast from 'react-hot-toast';
 
 export default function StudentDashboard() {
   const [activeCard, setActiveCard] = useState(null);
   const { studentData, isLoading, refetch } = useGetStudentData();
-
+  const { logoutMyUser } = useLogoutMyUser();
   const name = studentData?.name || studentData?.data?.name;
   const college = studentData?.college || studentData?.data?.college;
   const navigate = useNavigate();
+  const [active, setactive] = useState(false);
   const features = [
     {
       id: 'test',
@@ -86,6 +89,17 @@ export default function StudentDashboard() {
     }
   ];
 
+  const logoutHandler = async ()=>{
+    try {
+      await logoutMyUser();
+      toast.success("logout successful");
+      navigate('/');
+    } catch (error) {
+      toast.error("error in logout");
+      console.log("error: ", error);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-green-50 to-pink-50">
       {/* Header */}
@@ -111,9 +125,28 @@ export default function StudentDashboard() {
                 )}
                 <p className="text-xs text-gray-500">How are you feeling today?</p>
               </div>
-              <div className="w-10 h-10 bg-linear-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-semibold">
-                S
+              <div className="relative">
+                <img
+                  onClick={() => setactive(!active)}
+                  src={`https://avatar.iran.liara.run/username?username=${name}`}
+                  width={50}
+                  height={50}
+                  className="rounded-full cursor-pointer border border-gray-300 hover:opacity-80 transition"
+                  alt=""
+                />
+
+                {active && (
+                  <div className="absolute top-14 right-0 bg-red-500 shadow-lg rounded-lg p-3 w-32 text-center border border-gray-200 animate-fade hover:bg-red-600 transition">
+                    <button
+                      onClick={logoutHandler}
+                      className="w-full rounded-md bg-red-500 text-white font-medium hover:bg-red-600 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
+
             </div>
           </div>
         </div>
@@ -154,7 +187,7 @@ export default function StudentDashboard() {
 
         {/* SOS Button - Prominent */}
         <div className="fixed bottom-8 right-8 z-50">
-          <button className="group relative bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 animate-pulse hover:animate-none transform hover:scale-105">
+          <button onClick={() => navigate('/sos')} className="group relative bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 animate-pulse hover:animate-none transform hover:scale-105">
             <AlertCircle className="w-6 h-6" />
             <span className="font-bold text-lg">SOS</span>
             <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full animate-ping"></div>

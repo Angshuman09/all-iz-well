@@ -558,7 +558,8 @@ export const getJournal = async (req, res) => {
 
     const journal = await Journal.findOne({ student: student._id });
     if (!journal) {
-      return res.status(404).json({ error: "Journal not found" });
+      // Return empty journal structure instead of 404
+      return res.status(200).json({ success: true, journal: { content: [] } });
     }
     res.status(200).json({ success: true, journal });
   } catch (error) {
@@ -594,3 +595,4 @@ export const deleteJournal = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+

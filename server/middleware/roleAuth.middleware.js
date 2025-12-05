@@ -1,4 +1,5 @@
 import { Admin } from "../models/Admin.model.js";
+import { Student } from "../models/Student.model.js";
 
 export const authorizeRoles = (...allowedRoles) => {
     return (req, res, next) => {
@@ -39,14 +40,26 @@ export const isCounsellor = (req, res, next) =>{
 };
 
 //student
-export const isStudent = (req, res, next) => {
-    if (req.role !== 'student') {
-        return res.status(403).json({
-            error: 'Forbidden - Student access required'
-        });
+export const isStudent = async (req, res, next) => {
+    try {
+        if (req.role !== 'student') {
+            return res.status(403).json({ error: 'Forbidden - Student access required' });
+        }
+
+        const student = await Student.findOne({ userId: req.userId });
+
+        if (!student) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        req.studentId = student._id;
+        next();
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    next();
 };
+
 
 export const isSuperAdmin = (req, res, next) => {
     if (req.role !== 'superadmin') {

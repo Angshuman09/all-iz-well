@@ -531,9 +531,6 @@ export const useGetJournal = () => {
     const GetJournal = async () => {
         const response = await fetch(`${API_BASE_URL}/api/v1/features/journal`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             credentials: 'include',
         })
 
@@ -545,30 +542,29 @@ export const useGetJournal = () => {
     }
 
     const {
-        mutateAsync: getJournal,
-        isPending,
+        data: journalData,
+        isLoading,
         isError,
-        isSuccess
-    } = useMutation({
-        mutationFn: GetJournal,
+        isSuccess,
+        refetch
+    } = useQuery({
+        queryKey: ["journal"],
+        queryFn: GetJournal,
     });
 
     return {
-        getJournal,
-        isPending,
+        journalData,
+        isLoading,
         isError,
-        isSuccess
+        isSuccess,
+        refetch
     }
 }
 
 export const useDeleteJournal = () => {
-    const DeleteJournal = async (journal) => {
-        const response = await fetch(`${API_BASE_URL}/api/v1/features/journal`, {
+    const DeleteJournal = async (entryId) => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/features/journal/${entryId}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(journal),
             credentials: 'include',
         })
 

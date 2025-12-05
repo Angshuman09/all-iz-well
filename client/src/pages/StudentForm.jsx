@@ -23,7 +23,7 @@ const formSchema = z.object({
 
 // ---------------- Component ----------------
 export default function StudentForm() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,25 +32,25 @@ export default function StudentForm() {
     resolver: zodResolver(formSchema),
   });
 
-  const {studentform, isPending} = useStudentForm();
-  const {activeColleges} = useGetActiveColleges();
-//const {collegeName, gender, age, collegeCode, semester} = req.body;
+  const { studentform, isPending } = useStudentForm();
+  const { activeColleges } = useGetActiveColleges();
+  //const {collegeName, gender, age, collegeCode, semester} = req.body;
   const onSubmit = async (data) => {
     try {
-    console.log("Form Data:", data);
-    const response = await studentform({
+      console.log("Form Data:", data);
+      const response = await studentform({
         collegeName: data.collegeName,
         gender: data.gender,
         age: data.age,
         collegeCode: data.collegeCode,
         semester: data.semester
-    })
+      })
 
-    toast.success('registration successful');
-    navigate('/student-dashboard');
+      toast.success('registration successful');
+      navigate('/student-dashboard');
     } catch (error) {
-        toast.error('some errors occurs');
-        console.log(`error: ${error}`);
+      toast.error('some errors occurs');
+      console.log(`error: ${error}`);
     }
   };
 
@@ -80,11 +80,11 @@ export default function StudentForm() {
           <option value="XYZ Institute">XYZ Institute</option>
           <option value="Tech University">Tech University</option> */}
           {activeColleges?.data?.length === 0 ? (
-        <option value="" disabled>No college found</option>
-      ) : (
-        activeColleges?.data?.map((college) => (
-          <option key={college._id} value={college.name}>{college.name}</option>
-        )))}
+            <option value="" disabled>No college found</option>
+          ) : (
+            activeColleges?.data?.map((college) => (
+              <option key={college._id} value={college.name}>{college.name}</option>
+            )))}
         </select>
         {errors.collegeName && (
           <p className="text-red-600 text-[13px] font-roboto mt-1">
@@ -157,12 +157,24 @@ export default function StudentForm() {
         )}
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full mt-6 py-3 bg-[#6C8F5E] text-white font-poppins font-semibold text-[16px] rounded-lg hover:scale-[1.02] transition-all"
-        >
-          Register & Continue
-        </button>
+        {isPending ? (
+          <button
+            type="submit"
+            disabled
+            className="w-full mt-6 py-3 bg-[#6C8F5E] text-white font-poppins font-semibold text-[16px] rounded-lg hover:scale-[1.02] flex justify-center items-center transition-all"
+          >
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-transparent" />
+            Registering..
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full mt-6 py-3 bg-[#6C8F5E] text-white font-poppins font-semibold text-[16px] rounded-lg hover:scale-[1.02] transition-all"
+          >
+            Register & Continue
+          </button>
+        )}
+
       </form>
     </div>
   );

@@ -1,19 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Sparkles, Heart, BookOpen, ClipboardList, Smile, Menu, X } from 'lucide-react';
-
+import Vector from '../assets/Vector.png'
 export function Buddybot() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi there! 👋 I'm your Mental Health Buddy. I'm here to support you through whatever you're feeling. How are you doing today?",
+      content: "Hi there! 👋 I'm your Buddy Bot. I'm here to support you through whatever you're feeling. How are you doing today?",
       timestamp: new Date()
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   // API key is read from environment variable (VITE_GEMINI_API_KEY) at build time.
+  // console.log(import.meta.env.VITE_GEMINI_API_KEY)
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-  console.log("api key:", apiKey);
+
   // No need for API key input UI; the key is provided via .env
   const [showSidebar, setShowSidebar] = useState(false);
   const messagesEndRef = useRef(null);
@@ -201,8 +202,9 @@ Remember: You're a supportive friend, not a therapist. Guide students to helpful
         <div className="p-6 flex-1 overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <Heart className="w-6 h-6 text-purple-500" />
-              <h2 className="font-bold text-gray-800">Wellness Tools</h2>
+              {/* <Heart className="w-6 h-6 text-purple-500" /> */}
+              <img src={Vector} width={50} height={50} alt="" />
+              <h2 className="font-bold text-gray-800">All Izz Well</h2>
             </div>
             <button onClick={() => setShowSidebar(false)} className="md:hidden">
               <X className="w-6 h-6" />
@@ -230,7 +232,7 @@ Remember: You're a supportive friend, not a therapist. Guide students to helpful
           <div className="mt-8 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
             <h3 className="font-semibold text-gray-800 mb-2 text-sm">Crisis Support</h3>
             <p className="text-xs text-gray-600 mb-2">If you're in crisis, please reach out:</p>
-            <p className="text-xs text-gray-700 font-medium">988 - Suicide & Crisis Lifeline</p>
+            <p className="text-xs text-gray-700 font-medium">112 - Suicide & Crisis Lifeline</p>
           </div>
         </div>
       </div>
@@ -254,10 +256,10 @@ Remember: You're a supportive friend, not a therapist. Guide students to helpful
             <Heart className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-gray-800">Mental Health Buddy</h1>
+            <h1 className="text-xl font-bold text-gray-800">Buddy Bot</h1>
             <p className="text-xs text-gray-500">Here to support you 💜</p>
           </div>
-          <Sparkles className="w-6 h-6 text-purple-500" />
+          {/* <Sparkles className="w-6 h-6 text-purple-500" /> */}
         </div>
 
         {/* Messages */}

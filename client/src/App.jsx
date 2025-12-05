@@ -8,7 +8,7 @@ import { Loginpage } from './pages/Loginpage'
 import StudentForm from './pages/StudentForm'
 import CollegeForm from './pages/AdminForm'
 import StudentDashboard from './pages/StudentDashboard'
-import AdminDashboard from './pages/AdminDashboard'
+import { AdminDashboard } from './pages/AdminDashboard'
 import SuperAdminDashboard from './pages/SuperadminDashboard'
 import MoodTracker from './pages/MoodTracker'
 import Assessment from './pages/Assessment'
@@ -18,6 +18,8 @@ import { Buddybot } from './pages/Buddybot'
 import { Resources } from './pages/Resources'
 import { MoodAnalytics } from './pages/MoodAnalytics'
 import { JournalPage } from './pages/JournalPage'
+import { SOS } from './pages/SOS'
+import { UpcomingSessions } from './pages/Upcomming'
 
 export const App = () => {
   return (
@@ -43,6 +45,8 @@ export const App = () => {
         <Route path='/resources' element={<Resources />} />
         <Route path='/analytics' element={<MoodAnalytics />} />
         <Route path='/journal' element={<JournalPage />} />
+        <Route path='/sos' element={<SOS />} />
+        <Route path='/upcoming-sessions' element={<UpcomingSessions />} />
       </Routes>
       <Toaster />
     </div>

@@ -18,46 +18,51 @@ export const JournalPage = () => {
     content: ''
   });
 
-  const { getJournal } = useGetJournal();
+  const { journalData, refetch } = useGetJournal();
   const { createJournal } = useCreateJournal();
   const { deleteJournal } = useDeleteJournal();
 
-  console.log(entries);
+  React.useEffect(() => {
+    if (journalData?.journal?.content) {
+      // Map _id to id for frontend consistency if needed, or just use _id
+      const mappedEntries = journalData.journal.content.map(entry => ({
+        ...entry,
+        id: entry._id // Ensure id property exists for existing code using entry.id
+      }));
+      // Sort by date descending
+      // mappedEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // console.log(mappedEntries.length);
+      setEntries(mappedEntries);
+    }
+  }, [journalData]);
 
   const handleAddEntry = async () => {
-    console.log("newEntry", newEntry);
     if (newEntry.title.trim() && newEntry.content.trim()) {
-      const entry = {
-        id: Date.now(),
-        title: newEntry.title,
-        content: newEntry.content,
-        date: selectedDate.toISOString()
-      };
       try {
         await createJournal({
           title: newEntry.title,
           content: newEntry.content
         });
         toast.success("Journal created successfully");
+        refetch(); // Fetch latest data from server to get the real ID
+        setNewEntry({ title: '', content: '' });
+        setShowAddModal(false);
       } catch (error) {
-        console.log("error is happening");
+        console.log("error creating journal", error);
         toast.error("Failed to create journal");
       }
-      setEntries([entry, ...entries]);
-      setNewEntry({ title: '', content: '' });
-      setShowAddModal(false);
     }
   };
 
-  const handleDeleteEntry = async (id) => {
+  const handleDeleteEntry = async (idx) => {
     try {
-      await deleteJournal(id);
+      await deleteJournal(idx);
       toast.success("Journal deleted successfully");
+      refetch(); // Refresh list from server
     } catch (error) {
-      console.log("error is happening");
+      console.log("error deleting journal", error);
       toast.error("Failed to delete journal");
     }
-    setEntries(entries.filter(entry => entry.id !== id));
   };
 
   const handleViewEntry = (entry) => {
@@ -150,6 +155,7 @@ export const JournalPage = () => {
   };
 
   const dateEntries = getEntriesForDate();
+  // console.log(dateEntries.length)
   const { daysInMonth, startingDayOfWeek, year, month } = getDaysInMonth(currentMonth);
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -281,7 +287,7 @@ export const JournalPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {dateEntries.map((entry) => (
+            {dateEntries.map((entry, index) => (
               <div
                 key={entry.id}
                 className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md p-4 md:p-6 transition-all hover:shadow-lg border border-gray-200"
@@ -289,7 +295,7 @@ export const JournalPage = () => {
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-lg font-semibold text-gray-900 flex-1 line-clamp-1">{entry.title}</h3>
                   <button
-                    onClick={() => handleDeleteEntry(entry.id)}
+                    onClick={() => handleDeleteEntry(index)}
                     className="text-gray-400 hover:text-red-500 transition-colors ml-2"
                   >
                     <Trash2 className="w-4 h-4" />
