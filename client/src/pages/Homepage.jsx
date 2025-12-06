@@ -1,65 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Brain, Users, Calendar, MessageCircle, Shield, ArrowRight, Menu, X } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  Heart,
+  Brain,
+  Users,
+  Calendar,
+  MessageCircle,
+  Shield,
+  ArrowRight,
+  Menu,
+  X,
+} from 'lucide-react';
+
 import Vector from '../assets/Vector.png';
+import AboutIllustration from '../assets/Frame.png';
 import { useNavigate } from 'react-router-dom';
-export default function MentalHealthHomepage() {
+
+export default function Homepage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showContact, setShowContact] = useState(false);
   const navigate = useNavigate();
 
   const services = [
     {
       icon: <Brain className="w-8 h-8" />,
-      title: "Therapy Sessions",
-      description: "Professional one-on-one therapy with licensed therapists tailored to your needs."
+      title: 'Therapy Sessions',
+      description:
+        'Professional one-on-one therapy with licensed therapists tailored to your needs.',
     },
     {
       icon: <Users className="w-8 h-8" />,
-      title: "Group Support",
-      description: "Connect with others in a safe, supportive community environment."
+      title: 'Group Support',
+      description:
+        'Connect with others in a safe, supportive community environment.',
     },
     {
       icon: <MessageCircle className="w-8 h-8" />,
-      title: "24/7 Crisis Support",
-      description: "Immediate help when you need it most, available around the clock."
+      title: '24/7 Crisis Support',
+      description: 'Immediate help when you need it most, available around the clock.',
     },
     {
       icon: <Calendar className="w-8 h-8" />,
-      title: "Wellness Programs",
-      description: "Structured programs for anxiety, depression, stress management and more."
-    }
+      title: 'Wellness Programs',
+      description:
+        'Structured programs for anxiety, depression, stress management and more.',
+    },
   ];
 
-  const stats = [
-    { number: "10k+", label: "People Helped" },
-    { number: "50+", label: "Licensed Therapists" },
-    { number: "98%", label: "Satisfaction Rate" },
-    { number: "24/7", label: "Support Available" }
-  ];
-//D4E7ED
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #D4E7ED 0%, #CBDAC8 50%, #D4E7ED 100%)' }}>
+    <div
+      className="min-h-screen bg-gradient-to-br from-[#DFFCEB] via-[#EDEBFF] to-[#FFE9F6] p-4 md:p-6"
+    >
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300`}>
+      <nav className={`fixed w-full z-50 transition-all duration-300 bg-transparent`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <img src={Vector} width={50} height={50} alt="" />
-              <span className="text-2xl font-bold text-slate-700">
-                All Izz Well
-              </span>
+              <span className="text-2xl font-bold text-slate-700">All Izz Well</span>
             </div>
-            
+
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#about" className="text-gray-700 transition-colors hover:text-[#6C8F5E]" >About</a>
-              <a href="#contact" className="text-gray-700 transition-colors hover:text-[#6C8F5E]" >Contact</a>
-              <button className="text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-95 transition-all" 
-              onClick={()=>navigate('/register')}
-                      style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
+              {/* FIXED: Points to About Section */}
+              <a
+                href="#about"
+                className="text-gray-700 transition-colors hover:text-[#6C8F5E]"
+              >
+                About
+              </a>
+
+              <button
+                onClick={() => setShowContact(true)}
+                className="text-gray-700 transition-colors hover:text-[#6C8F5E]"
+              >
+                Contact
+              </button>
+
+              <button
+                className="text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-95 transition-all
+                  bg-gradient-to-br from-[#A8C699] to-[#6C8F5E]"
+                onClick={() => navigate('/register')}
+              >
                 Get Started
               </button>
             </div>
 
-            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ color: '#6C8F5E' }}>
+            <button
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              style={{ color: '#6C8F5E' }}
+            >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -67,14 +96,33 @@ export default function MentalHealthHomepage() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden backdrop-blur-md" style={{ backgroundColor: 'rgba(212, 231, 237, 0.95)' }}>
+          <div
+            className="md:hidden backdrop-blur-md"
+            style={{ backgroundColor: 'rgba(237, 235, 255, 0.95)' }}
+          >
             <div className="px-4 py-4 space-y-3">
-              <a href="#about" className="block text-slate-700 hover:text-[#6C8F5E]" >About</a>
-              <a href="#contact" className="block text-slate-700 hover:text-[#6C8F5E]" >Contact</a>
-              <button className="w-full text-white px-6 py-2 rounded-full" 
-              onClick={()=>navigate('/register')}
-                      style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
-                        
+              <a
+                href="#about"
+                className="block text-slate-700 hover:text-[#6C8F5E]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+
+              <button
+                onClick={() => {
+                  setShowContact(true);
+                  setIsMenuOpen(false);
+                }}
+                className="block text-left text-slate-700 hover:text-[#6C8F5E]"
+              >
+                Contact
+              </button>
+
+              <button
+                className="w-full text-white px-6 py-2 rounded-full bg-gradient-to-br from-[#A8C699] to-[#6C8F5E]"
+                onClick={() => navigate('/register')}
+              >
                 Get Started
               </button>
             </div>
@@ -83,179 +131,238 @@ export default function MentalHealthHomepage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
-            <div className="space-y-4 sm:space-y-6 animate-fade-in">
-              <div className="inline-block">
-                <span className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold" 
-                      style={{ backgroundColor: '#CBDAC8', color: '#6C8F5E' }}>
-                  Your Mental Health Matters
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Find Peace of Mind,
-                <span className="block" style={{ color: '#6C8F5E' }}>
-                  One Step at a Time
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                Professional mental health support that's accessible, compassionate, and tailored to your unique journey toward wellness.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <button className="text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:shadow-xl transform hover:scale-105 transition-all flex items-center justify-center space-x-2 text-sm sm:text-base" 
-                        style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}
-                        onClick={()=>navigate('/register')}
-                        >
-                  <span>Start Your Journey</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
-                <button className="border-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all text-sm sm:text-base" 
-                        style={{ borderColor: '#6C8F5E', color: '#6C8F5E', backgroundColor: 'transparent' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#CBDAC8'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                  Learn More
-                </button>
-              </div>
-            </div>
-            
-            <div className="relative mt-8 md:mt-0">
-              <div className="absolute inset-0 rounded-2xl sm:rounded-3xl blur-3xl opacity-30 animate-pulse" 
-                   style={{ backgroundColor: '#A8C699' }}></div>
-              <div className="relative backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl" 
-                   style={{ backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
-                <div className="space-y-3 sm:space-y-4 md:space-y-6">
-                  <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Shield className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#6C8F5E' }} />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">100% Confidential</h3>
-                      <p className="text-xs sm:text-sm text-gray-600">Your privacy is our priority</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Users className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#A8C699' }} />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Licensed Professionals</h3>
-                      <p className="text-xs sm:text-sm text-gray-600">Certified and experienced</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
-                    <Heart className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0" style={{ color: '#A8C690' }} />
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Compassionate Care</h3>
-                      <p className="text-xs sm:text-sm text-gray-600">Supportive and understanding</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <section className="pt-28 sm:pt-32 pb-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          {/* LEFT */}
+          <div className="space-y-6">
+            <span
+              className="px-4 py-2 rounded-full text-sm font-semibold"
+              style={{ backgroundColor: '#CBDAC8', color: '#6C8F5E' }}
+            >
+              <b>TEAM</b> print("Positivity")
+            </span>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
+              Find Peace of Mind,
+              <span className="block text-[#6C8F5E]">One Step at a Time</span>
+            </h1>
+
+            <p className="text-gray-600 text-lg">
+              A Digital Mental Health & Psychological Support System for Students of Higher
+              Education (SIH25092)
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                className="text-white px-8 py-4 rounded-full hover:shadow-xl transform hover:scale-105 transition-all flex items-center space-x-2
+                  bg-gradient-to-br from-[#A8C699] to-[#6C8F5E]"
+                onClick={() => navigate('/register')}
+              >
+                <span>Start Your Journey</span>
+                <ArrowRight />
+              </button>
+
+              <button
+                className="border-2 px-8 py-4 rounded-full text-[#2f871dff] border-[#247713ff] hover:bg-[#E6FFE9] transition"
+              >
+                Learn More
+              </button>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 backdrop-blur-sm" 
-               style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold" style={{ color: '#6C8F5E' }}>
-                  {stat.number}
+          {/* RIGHT - 3 Cards */}
+          <div className="relative mt-6 md:mt-0">
+            <div
+              className="absolute inset-0 rounded-3xl blur-3xl opacity-30 animate-pulse"
+              style={{ backgroundColor: '#72a164ff' }}
+            ></div>
+
+            <div className="relative bg-white/60 backdrop-blur-md rounded-3xl p-6 shadow-2xl space-y-6">
+              {[
+                {
+                  icon: <Shield className="w-12 h-12" style={{ color: '#6C8F5E' }} />,
+                  title: '100% Confidential',
+                  desc: 'Your privacy is our priority',
+                },
+                {
+                  icon: <Users className="w-12 h-12" style={{ color: '#6C8F5E' }} />,
+                  title: 'Counsellor - Student - IQAC Admin Interaction',
+                  desc: 'Anonymous Interaction (Stigma Free Environment)',
+                },
+                {
+                  icon: <Heart className="w-12 h-12" style={{ color: '#6C8F5E' }} />,
+                  title: 'Compassionate Community',
+                  desc: 'Trained Student Volunteers & Peer Support',
+                },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center p-4 bg-white rounded-2xl shadow-md hover:shadow-lg transition"
+                >
+                  {item.icon}
+                  <div className="ml-4">
+                    <h3 className="font-semibold text-gray-900">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                  </div>
                 </div>
-                <div className="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-sm md:text-base">{stat.label}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+      <section id="services" className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Our Services
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900">Our Services</h2>
+            <p className="text-gray-600 text-lg mt-2">
               Comprehensive mental health support designed to help you thrive
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <div key={index} className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4" 
-                     style={{ background: 'linear-gradient(135deg, #CBDAC8 0%, #A8C699 100%)', color: '#6C8F5E' }}>
+              <div
+                key={index}
+                className="bg-white rounded-2xl p-6 shadow-lg hover:-translate-y-2 transition-all"
+              >
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 bg-gradient-to-br 
+                from-[#DFFCEB] via-[#EDEBFF] to-[#FFE9F6] text-[#6C8F5E]"
+                >
                   {service.icon}
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">{service.title}</h3>
-                <p className="text-sm sm:text-base text-gray-600">{service.description}</p>
+
+                <h3 className="text-xl font-semibold text-gray-900">{service.title}</h3>
+                <p className="text-gray-600 mt-2">{service.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl sm:rounded-3xl p-8 sm:p-10 md:p-12 text-center shadow-2xl" 
-               style={{ background: 'linear-gradient(135deg, #A8C699 0%, #6C8F5E 100%)' }}>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-              Ready to Begin Your Healing Journey?
+      {/* ABOUT SECTION */}
+      <section
+        id="about"
+        className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 scroll-mt-24"
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+          {/* LEFT IMAGE */}
+          <div className="flex justify-center relative">
+            <img
+              src={AboutIllustration}
+              alt="About us illustration"
+              className="w-full max-w-md drop-shadow-xl"
+            />
+          </div>
+
+          {/* RIGHT TEXT */}
+          <div>
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">About Us</h4>
+
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Discover the Faces Behind Our Mental Health Consultancy
             </h2>
-            <p className="text-lg sm:text-xl mb-6 sm:mb-8" style={{ color: '#D4E7ED' }}>
-              Take the first step towards better mental health today
+
+            <p className="text-gray-700 mb-4">
+              We are a team of 6 members including UI/UX Designer, Frontend Developer,
+              Backend Developer, Presenter, and Team Lead.
             </p>
-            <button className="bg-white px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:shadow-xl transform hover:scale-105 transition-all font-semibold" 
-                    style={{ color: '#6C8F5E' }}>
-              Schedule a Free Consultation
+
+            <ul className="text-gray-700 space-y-1 mb-6">
+              <li>1. Preetis Debnath</li>
+              <li>2. Homagni Choudhury</li>
+              <li>3. Debraj Choudhury</li>
+              <li>4. Angshuman Kashyap</li>
+              <li>5. Khushi Bora</li>
+              <li>6. Pakhi Dubey</li>
+            </ul>
+
+            <button className="px-6 py-3 rounded-full bg-[#6C8F5E] text-white font-semibold hover:scale-105 transition">
+              More Details
             </button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#6C8F5E' }}>
+      {/* FOOTER */}
+      <footer
+        className="w-full py-6 px-4 sm:px-8"
+        style={{
+          background: 'linear-gradient(to bottom right, #DFFCEB, #EDEBFF, #FFE9F6)',
+        }}
+      >
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+            {/* Brand */}
             <div>
-              <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+              <div className="flex items-center space-x-2 mb-4">
                 <img src={Vector} width={50} height={50} alt="" />
-                <span className="text-lg sm:text-xl font-bold">All Izz Well</span>
+                <span className="text-xl font-bold text-gray-900">All Izz Well</span>
               </div>
-              <p className="text-sm sm:text-base" style={{ color: '#D4E7ED' }}>Supporting your mental wellness journey with compassion and expertise.</p>
+              <p className="text-gray-700">
+                Supporting your mental wellness journey with compassion and expertise.
+              </p>
             </div>
+
+            {/* Company */}
             <div>
-              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Services</h4>
-              <ul className="space-y-2 text-xs sm:text-sm" style={{ color: '#D4E7ED' }}>
-                <li><a href="#" className="hover:text-white transition-colors">Therapy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Group Support</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Crisis Help</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Wellness Programs</a></li>
+              <h4 className="font-semibold mb-3 text-gray-900">Company</h4>
+              <ul className="space-y-2 text-gray-700">
+                <li>
+                  <a href="#about" className="hover:text-[#6C8F5E] transition">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="hover:text-[#6C8F5E] transition">
+                    Our Team
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setShowContact(true)}
+                    className="hover:text-[#6C8F5E] transition"
+                  >
+                    Contact
+                  </button>
+                </li>
               </ul>
             </div>
+
+            {/* Hotline */}
             <div>
-              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Company</h4>
-              <ul className="space-y-2 text-xs sm:text-sm" style={{ color: '#D4E7ED' }}>
-                <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Our Team</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Crisis Resources</h4>
-              <p className="mb-2 text-xs sm:text-sm" style={{ color: '#D4E7ED' }}>24/7 Crisis Hotline:</p>
-              <p className="font-semibold text-base sm:text-lg" style={{ color: '#A8C699' }}>1-800-273-8255</p>
+              <h4 className="font-semibold mb-3 text-gray-900">Crisis Resources</h4>
+              <p className="text-gray-700 mb-1">24/7 Crisis Hotline:</p>
+              <p className=" text-gray-700 mb-1">1-800-273-8255</p>
             </div>
           </div>
-          <div className="border-t pt-6 sm:pt-8 text-center text-xs sm:text-sm" style={{ borderColor: '#A8C699', color: '#D4E7ED' }}>
-            <p>&copy; 2024 MindfulCare. All rights reserved.</p>
+
+          <div className="border-t pt-4 text-center text-gray-700 text-sm">
+            © TEAM print("Positivity") SIH2025. All rights reserved.
           </div>
         </div>
       </footer>
+
+      {/* CONTACT POPUP */}
+      {showContact && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[999]">
+          <div className="bg-white rounded-xl p-6 w-80 shadow-xl text-center">
+            <h2 className="text-xl font-semibold mb-3 text-gray-800">Contact Us</h2>
+
+            <p className="text-gray-700 mb-1">📞 +91 6000536164</p>
+            <p className="text-gray-700 mb-4">📧 preetisdebnath.gdgcjec@gmail.com</p>
+
+            <button
+              onClick={() => setShowContact(false)}
+              className="px-4 py-2 rounded-full bg-[#6C8F5E] text-white hover:opacity-90"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

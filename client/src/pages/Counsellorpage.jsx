@@ -10,11 +10,21 @@ import {
   Briefcase,
   Bell,
   CheckCircle,
+
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useGetCounsellor } from "../apis/Counsellor";
+import { useGetUsers } from "../apis/MyUserAuth";
 
 const CounsellorDashboard = () => {
   const navigate = useNavigate();
+
+  const { getCounsellor, isLoading } = useGetCounsellor();
+  const counsellor = getCounsellor?.data || "";
+
+  const { users } = useGetUsers();
+  // console.log(users);
+
   const notifications = [
     {
       id: 1,
@@ -45,15 +55,15 @@ const CounsellorDashboard = () => {
 
           <div className="flex-1">
             <h2 className="text-xl font-semibold text-gray-800">
-              Your Profile
+              {counsellor[0]?.fullName}
             </h2>
 
             <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
-              <Mail size={16} /> <span>priya.sharma@college.edu</span>
+              <Mail size={16} /> <span>{users?.userData?.email}</span>
             </div>
 
             <div className="flex items-center gap-2 text-gray-600 text-sm">
-              <Phone size={16} /> <span>+91 98765 43210</span>
+              <Phone size={16} /> <span>{counsellor[0]?.phoneNumber}</span>
             </div>
 
 
@@ -96,7 +106,7 @@ const CounsellorDashboard = () => {
             </div>
           </button>
 
-          <button className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
+          <button onClick={() => navigate("/critical-students")} className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
             <div className="flex flex-col items-center justify-center space-y-6">
               <div className="w-28 h-28 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-[#FFE9F6] to-[#EDEBFF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <AlertTriangle className="w-14 h-14 md:w-16 md:h-16 text-red-600" />
@@ -107,7 +117,7 @@ const CounsellorDashboard = () => {
             </div>
           </button>
 
-          <button className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
+          <button onClick={() => navigate("/previous-sessions")} className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
             <div className="flex flex-col items-center justify-center space-y-6">
               <div className="w-28 h-28 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-[#EDEBFF] to-[#D6F6FF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <FileText className="w-14 h-14 md:w-16 md:h-16 text-purple-600" />
@@ -118,7 +128,7 @@ const CounsellorDashboard = () => {
             </div>
           </button>
 
-          <button className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
+          <button onClick={() => navigate("/feedback")} className="group bg-white/90 rounded-3xl shadow-lg p-10 hover:shadow-2xl hover:scale-105 active:bg-[#FFE9F6] active:scale-95 transition-all duration-300">
             <div className="flex flex-col items-center justify-center space-y-6">
               <div className="w-28 h-28 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-[#DFFCEB] to-[#D6F6FF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <MessageSquare className="w-14 h-14 md:w-16 md:h-16 text-green-600" />

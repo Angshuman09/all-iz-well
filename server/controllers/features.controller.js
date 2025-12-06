@@ -596,3 +596,209 @@ export const deleteJournal = async (req, res) => {
   }
 }
 
+//mood analytics
+
+export const getMoodAnalyticsController = async (req, res) => {
+  try {
+    const student = await Student.findOne({ userId: req.userId });
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    // Get mood data for the last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const moodRecords = await Mood.find({
+      student: student._id,
+      createdAt: { $gte: sevenDaysAgo }
+    }).sort({ createdAt: 1 });
+
+    // If no mood data exists
+    if (moodRecords.length === 0) {
+      return res.status(200).json({
+        sevenDayTrend: [],
+        weeklyBreakdown: [
+          { mood: 'Very Happy', emoji: '😄', percentage: 0, color: '#8EA8FF' },
+          { mood: 'Happy', emoji: '😊', percentage: 0, color: '#7ED7C2' },
+          { mood: 'Neutral', emoji: '😐', percentage: 0, color: '#A9C1FF' },
+          { mood: 'Sad', emoji: '😔', percentage: 0, color: '#F7B9F2' },
+          { mood: 'Very Sad', emoji: '😢', percentage: 0, color: '#FFB3B3' }
+        ],
+        insights: {
+          mostFrequentMood: null,
+          leastFrequentMood: null,
+          averageScore: 0,
+          variability: 'No Data'
+        }
+      });
+    }
+
+    // ===== 1. 7-DAY MOOD TREND =====
+    const sevenDayTrend = [];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    // Create a map of dates to mood scores
+    const moodByDate = {};
+    moodRecords.forEach(record => {
+      const dateKey = new Date(record.createdAt).toDateString();
+      moodByDate[dateKey] = record.mood;
+    });
+
+    // Generate last 7 days data
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateKey = date.toDateString();
+      const dayName = days[date.getDay()];
+      
+      const moodScore = moodByDate[dateKey] !== undefined ? moodByDate[dateKey] : null;
+      
+      if (moodScore !== null) {
+        sevenDayTrend.push({
+          day: dayName,
+          score: moodScore,
+          mood: getMoodLabel(moodScore),
+          emoji: getMoodEmoji(moodScore)
+        });
+      }
+    }
+
+    // ===== 2. WEEKLY MOOD BREAKDOWN =====
+    const moodCounts = {
+      2: 0,   // Very Happy
+      1: 0,   // Happy
+      0: 0,   // Neutral
+      '-1': 0, // Sad
+      '-2': 0  // Very Sad
+    };
+
+    moodRecords.forEach(record => {
+      moodCounts[record.mood]++;
+    });
+
+    const totalRecords = moodRecords.length;
+    const weeklyBreakdown = [
+      {
+        mood: 'Very Happy',
+        emoji: '😄',
+        percentage: Math.round((moodCounts[2] / totalRecords) * 100),
+        color: '#8EA8FF'
+      },
+      {
+        mood: 'Happy',
+        emoji: '😊',
+        percentage: Math.round((moodCounts[1] / totalRecords) * 100),
+        color: '#7ED7C2'
+      },
+      {
+        mood: 'Neutral',
+        emoji: '😐',
+        percentage: Math.round((moodCounts[0] / totalRecords) * 100),
+        color: '#A9C1FF'
+      },
+      {
+        mood: 'Sad',
+        emoji: '😔',
+        percentage: Math.round((moodCounts['-1'] / totalRecords) * 100),
+        color: '#F7B9F2'
+      },
+      {
+        mood: 'Very Sad',
+        emoji: '😢',
+        percentage: Math.round((moodCounts['-2'] / totalRecords) * 100),
+        color: '#FFB3B3'
+      }
+    ];
+
+    // ===== 3. MOOD INSIGHTS =====
+    
+    // Most and Least Frequent Mood
+    let maxCount = 0;
+    let minCount = totalRecords;
+    let mostFrequentScore = 0;
+    let leastFrequentScore = 0;
+
+    Object.entries(moodCounts).forEach(([score, count]) => {
+      const scoreNum = Number(score);
+      if (count > maxCount) {
+        maxCount = count;
+        mostFrequentScore = scoreNum;
+      }
+      if (count < minCount && count > 0) {
+        minCount = count;
+        leastFrequentScore = scoreNum;
+      }
+    });
+
+    // If all moods have 0 count except one, set least frequent to the one with 0
+    if (minCount === totalRecords) {
+      for (let score of [2, 1, 0, -1, -2]) {
+        if (moodCounts[score] === 0) {
+          leastFrequentScore = score;
+          break;
+        }
+      }
+    }
+
+    // Average Mood Score
+    const totalScore = moodRecords.reduce((sum, record) => sum + record.mood, 0);
+    const averageScore = (totalScore / totalRecords).toFixed(1);
+
+    // Mood Variability (Standard Deviation)
+    const scores = moodRecords.map(record => record.mood);
+    const mean = totalScore / totalRecords;
+    const variance = scores.reduce((acc, score) => acc + Math.pow(score - mean, 2), 0) / totalRecords;
+    const stdDev = Math.sqrt(variance);
+
+    let variability;
+    if (stdDev < 0.5) variability = 'Very Stable';
+    else if (stdDev < 1.0) variability = 'Stable';
+    else if (stdDev < 1.5) variability = 'Moderate';
+    else if (stdDev < 2.0) variability = 'Variable';
+    else variability = 'Highly Variable';
+
+    const insights = {
+      mostFrequentMood: {
+        score: mostFrequentScore,
+        mood: getMoodLabel(mostFrequentScore),
+        emoji: getMoodEmoji(mostFrequentScore)
+      },
+      leastFrequentMood: {
+        score: leastFrequentScore,
+        mood: getMoodLabel(leastFrequentScore),
+        emoji: getMoodEmoji(leastFrequentScore)
+      },
+      averageScore: Number(averageScore),
+      variability
+    };
+
+    return res.status(200).json({
+      sevenDayTrend,
+      weeklyBreakdown,
+      insights
+    });
+
+  } catch (error) {
+    console.log("Error in mood analytics controller:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Helper functions
+const getMoodEmoji = (score) => {
+  if (score === 2) return '😄';
+  if (score === 1) return '😊';
+  if (score === 0) return '😐';
+  if (score === -1) return '😔';
+  return '😢';
+};
+
+const getMoodLabel = (score) => {
+  if (score === 2) return 'Very Happy';
+  if (score === 1) return 'Happy';
+  if (score === 0) return 'Neutral';
+  if (score === -1) return 'Sad';
+  return 'Very Sad';
+};

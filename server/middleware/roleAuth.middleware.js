@@ -19,18 +19,21 @@ export const authorizeRoles = (...allowedRoles) => {
 
 // admin
 export const isAdmin = async (req, res, next) => {
-    if (req.role !== 'admin') {
-        return res.status(403).json({
-            error: 'Forbidden - Admin access required'
-        });
+    try {
+        if (req.role !== 'admin') {
+            return res.status(403).json({
+                error: 'Forbidden - Admin access required'
+            });
+        }
+        next();
+    } catch (error) {
+        console.log(`error in admin middleware: ${error}`);
+        res.status(500).json({ error: `error in admin middleware: ${error}` })
     }
-    const admin = await Admin.findById(req.userId);
-    req.college = admin.collegeName;
-    next();
 };
 
 //counsellor
-export const isCounsellor = (req, res, next) =>{
+export const isCounsellor = (req, res, next) => {
     if (req.role !== 'counsellor') {
         return res.status(403).json({
             error: 'Forbidden - Counsellor access required'
@@ -68,4 +71,18 @@ export const isSuperAdmin = (req, res, next) => {
         });
     }
     next();
+}
+
+export const getCollege = async (req, res, next) => {
+    try {
+        console.log("req.userId:", req.userId);
+        const admin = await Admin.findOne({ userId: req.userId });
+        console.log("Admin found:", admin);
+        // console.log(await Admin.find({}))
+        req.college = admin.collegeName;
+        next();
+    } catch (error) {
+        console.log(`error in getCollege middleware: ${error}`);
+        res.status(500).json({ error: `error in getCollege middleware: ${error}` })
+    }
 }

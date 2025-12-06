@@ -5,20 +5,20 @@ const adminSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    phoneNumber:{
+    phoneNumber: {
         type: String,
         required: true
     },
-    collegeName:{
+    collegeName: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'College',
         required: true,
     },
-    collegeStamps:{
+    collegeStamps: {
         type: String,
         required: true
     },
-    TermnsAndConditions:{
+    TermnsAndConditions: {
         type: Boolean,
         required: true,
         default: false

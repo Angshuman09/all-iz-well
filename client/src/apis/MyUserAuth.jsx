@@ -1,11 +1,11 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 
 //Authentication - register, login, email verification
 export const useCreateMyUser = () => {
-    const createMyUserRequest = async (user)=>{
+    const createMyUserRequest = async (user) => {
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
             method: 'POST',
             headers: {
@@ -22,7 +22,7 @@ export const useCreateMyUser = () => {
         return response.json();
     }
 
-     const {
+    const {
         mutateAsync: createMyUser,
         isPending,
         isError,
@@ -40,7 +40,7 @@ export const useCreateMyUser = () => {
 }
 
 export const useVerifyMyUser = () => {
-    const verifyMyUserRequest = async (otpData)=>{
+    const verifyMyUserRequest = async (otpData) => {
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/verify-otp`, {
             method: 'POST',
             headers: {
@@ -49,14 +49,14 @@ export const useVerifyMyUser = () => {
             body: JSON.stringify(otpData),
             credentials: 'include',
         });
-        
+
         if (!response.ok) {
             throw new Error('Error verifying OTP');
         }
         return response.json();
     }
-    
-     const {
+
+    const {
         mutateAsync: verifyMyUser,
         isPending,
         isError,
@@ -64,7 +64,7 @@ export const useVerifyMyUser = () => {
     } = useMutation({
         mutationFn: verifyMyUserRequest,
     });
-    
+
     return {
         verifyMyUser,
         isPending,
@@ -74,7 +74,7 @@ export const useVerifyMyUser = () => {
 }
 
 export const useLoginMyUser = () => {
-    const loginMyUserRequest = async (loginData)=>{
+    const loginMyUserRequest = async (loginData) => {
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
             method: 'POST',
             headers: {
@@ -89,7 +89,7 @@ export const useLoginMyUser = () => {
         }
         return response.json();
     }
-        const {
+    const {
         mutateAsync: loginMyUser,
         isPending,
         isError,
@@ -97,7 +97,7 @@ export const useLoginMyUser = () => {
     } = useMutation({
         mutationFn: loginMyUserRequest,
     });
-    
+
     return {
         loginMyUser,
         isPending,
@@ -106,14 +106,14 @@ export const useLoginMyUser = () => {
     }
 }
 
-export const useLogoutMyUser = ()=>{
-    const logoutMyUserRequest = async ()=>{
-        const response = await fetch(`${API_BASE_URL}/api/v1/auth/logout`,{
+export const useLogoutMyUser = () => {
+    const logoutMyUserRequest = async () => {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
             method: 'POST',
             credentials: 'include',
         })
 
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error("Failed to logout user");
         }
 
@@ -128,7 +128,7 @@ export const useLogoutMyUser = ()=>{
     } = useMutation({
         mutationFn: logoutMyUserRequest,
     });
-    
+
     return {
         logoutMyUser,
         isPending,

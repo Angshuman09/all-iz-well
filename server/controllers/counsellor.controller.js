@@ -1,5 +1,8 @@
 import { Counsellor } from "../models/Counsellor.model.js";
 import { User } from "../models/User.model.js";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import { CounsellorNotification } from "../models/CounsellorNotification.model.js";
 
 export const addCounsellorController = async (req, res) => {
     try {
@@ -24,23 +27,32 @@ export const addCounsellorController = async (req, res) => {
             return res.status(401).json({ error: "Password must be atleast of 6 characters" });
         }
 
+        let salt = await bcrypt.genSalt(10);
+        let hash = await bcrypt.hash(password, salt);
+
         const newUser = await User.create({
             email,
-            password,
-            role:"counsellor"
+            password: hash,
+            role: "counsellor"
         })
 
         const phoneregex = /^[6-9]\d{9}$/;
 
-        if(phoneregex.test(phoneNumber)){
-            return res.status(409).json({error: "phone number is not valid"});
+        if (phoneregex.test(phoneNumber)) {
+            return res.status(409).json({ error: "phone number is not valid" });
         }
 
         const counsellor = await Counsellor.create({
             fullName,
             phoneNumber,
+            userId: newUser._id,
             gender,
-            collegeName: req.collegeName
+            collegeName: req.college
+        })
+
+        return res.status(201).json({
+            message: "Counsellor added successfully",
+            data: counsellor
         })
 
     } catch (error) {
@@ -48,3 +60,42 @@ export const addCounsellorController = async (req, res) => {
         res.status(500).json({ error: `error in add counsellor controller: ${error}` })
     }
 }
+
+export const getCounsellorController = async (req, res) => {
+    try {
+        const counsellor = await Counsellor.find({ userId: req.userId });
+        return res.status(200).json({
+            message: "Counsellor fetched successfully",
+            data: counsellor
+        })
+    } catch (error) {
+        console.log(`error in get counsellor controller: ${error}`);
+        res.status(500).json({ error: `error in get counsellor controller: ${error}` })
+    }
+}
+
+
+export const getCriticalStudents = async (req, res) => {
+    try {
+        const counsellor = await Counsellor.findOne({ userId: req.userId });
+
+        const notifications = await CounsellorNotification.find({
+            counsellor: counsellor._id,
+            severity: { $in: ["severe", "critical", "very severe"] },
+            status: "pending"
+        })
+            .populate("student", "name email phone rollNo")
+            .populate("assessment")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: notifications.length,
+            notifications
+        });
+
+    } catch (error) {
+        console.error("Error fetching critical students:", error);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+};
