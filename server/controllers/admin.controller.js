@@ -8,10 +8,10 @@ const uploadImage = async (file) => {
     const base64Image = Buffer.from(image.buffer).toString('base64');
     const dataURI = `data:${image.mimetype};base64,${base64Image}`;
     const uploadResponse = await cloudinary.uploader.upload(dataURI, {
-      folder: 'college_stamps', 
+      folder: 'college_stamps',
       resource_type: 'auto'
     });
-    return uploadResponse.secure_url; 
+    return uploadResponse.secure_url;
   } catch (error) {
     console.error('Error uploading image to Cloudinary:', error);
     throw new Error('Image upload failed');
@@ -21,47 +21,47 @@ const uploadImage = async (file) => {
 // Admin Form Controller
 export const adminFormController = async (req, res) => {
   try {
-    const { 
-      collegeName, 
-      collegeCode, 
-      AISHEcode, 
-      InstitutionType, 
-      address, 
+    const {
+      collegeName,
+      collegeCode,
+      AISHEcode,
+      InstitutionType,
+      address,
       phoneNumber,
       TermnsAndConditions
     } = req.body;
 
     // Validate required fields
     if (!collegeName || !collegeCode || !AISHEcode || !phoneNumber || !InstitutionType || !address) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: "All fields are required" 
+        error: "All fields are required"
       });
     }
 
     // Validate phone number
     const phoneNumberRegex = /^[6-9]\d{9}$/;
     if (!phoneNumberRegex.test(phoneNumber)) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: "Phone number is not valid. Must be a 10-digit Indian number" 
+        error: "Phone number is not valid. Must be a 10-digit Indian number"
       });
     }
 
     // Check if image was uploaded (field name: imageFile)
     if (!req.file) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: "Image file is required" 
+        error: "Image file is required"
       });
     }
 
     // Validate file type (optional but recommended)
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(req.file.mimetype)) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: "Only JPG, JPEG, PNG, and WEBP images are allowed" 
+        error: "Only JPG, JPEG, PNG, and WEBP images are allowed"
       });
     }
 
@@ -106,6 +106,7 @@ export const adminFormController = async (req, res) => {
 
     // Create new admin
     const admin = new Admin({
+      userId: req.userId,
       phoneNumber,
       collegeName: college._id, // Reference to college
       collegeStamps: collegeStampUrl, // Store the uploaded image URL
@@ -135,19 +136,19 @@ export const adminFormController = async (req, res) => {
 
   } catch (error) {
     console.error("Error in admin form controller:", error);
-    
+
     // Handle specific MongoDB errors
     if (error.code === 11000) {
-      return res.status(409).json({ 
+      return res.status(409).json({
         success: false,
-        error: 'Duplicate entry found. College or admin already exists.' 
+        error: 'Duplicate entry found. College or admin already exists.'
       });
     }
 
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       error: 'Internal Server Error in admin form controller',
-      details: error.message 
+      details: error.message
     });
   }
 };

@@ -8,6 +8,10 @@ export const UpcomingSessions = () => {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedSession, setSelectedSession] = useState(null);
 
+    // NEW STATES FOR NOTES
+    const [sessionNotes, setSessionNotes] = useState({});
+    const [noteDraft, setNoteDraft] = useState("");
+
     const allSessions = {
         '2025-12-3': [
             { id: 1, studentName: 'Anonymous Student #A23', time: '9:00 AM', isActive: false },
@@ -46,6 +50,7 @@ export const UpcomingSessions = () => {
     const generateWeekDates = () => {
         const dates = [];
         const startOfWeek = new Date(selectedDate);
+        // Move to Monday as start of week
         startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1);
 
         for (let i = 0; i < 7; i++) {
@@ -72,6 +77,7 @@ export const UpcomingSessions = () => {
         const year = currentMonth.getFullYear();
         const month = currentMonth.getMonth();
         const firstDay = new Date(year, month, 1);
+        // Start from Monday of the week containing the 1st
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - (firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1));
 
@@ -272,7 +278,10 @@ export const UpcomingSessions = () => {
                         currentSessions.map((session) => (
                             <div
                                 key={session.id}
-                                onClick={() => setSelectedSession(session)}
+                                onClick={() => {
+                                    setSelectedSession(session);
+                                    setNoteDraft(sessionNotes[session.id] || "");
+                                }}
                                 className="bg-white rounded-2xl shadow-lg p-4 sm:p-5 lg:p-6 hover:shadow-xl transition-all cursor-pointer border border-gray-100 hover:border-purple-200"
                             >
                                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -286,7 +295,7 @@ export const UpcomingSessions = () => {
                                             </div>
                                             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-green-50 to-emerald-100 rounded-lg">
                                                 <Phone className="w-4 h-4 text-green-600" />
-                                                <span className="text-sm font-medium text-green-700">Phone Call</span>
+                                                <span className="text-sm font-medium text-green-700">Online session</span>
                                             </div>
                                         </div>
                                     </div>
@@ -299,7 +308,16 @@ export const UpcomingSessions = () => {
                                                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                                 }`}
                                         >
-                                            Start Call
+                                            View Details
+                                        </button>
+                                        <button
+                                            disabled={!session.isActive}
+                                            className={`px-5 py-2.5 rounded-xl font-semibold transition-all text-sm sm:text-base ${session.isActive
+                                                ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                }`}
+                                        >
+                                            Start Session
                                         </button>
                                         <button
                                             disabled={!session.isActive}
@@ -308,7 +326,7 @@ export const UpcomingSessions = () => {
                                                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                                 }`}
                                         >
-                                            End Call
+                                            End Session
                                         </button>
                                     </div>
                                 </div>
@@ -327,8 +345,14 @@ export const UpcomingSessions = () => {
 
             {/* Session Details Modal */}
             {selectedSession && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setSelectedSession(null)}>
-                    <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 transform transition-all" onClick={(e) => e.stopPropagation()}>
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+                    onClick={() => setSelectedSession(null)}
+                >
+                    <div
+                        className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 transform transition-all"
+                        onClick={(e) => e.stopPropagation()}
+                    >
 
                         <div className="flex items-start justify-between mb-6">
                             <div>
@@ -357,8 +381,46 @@ export const UpcomingSessions = () => {
                                     <Phone className="w-5 h-5" />
                                     <span className="font-semibold">Mode</span>
                                 </div>
-                                <p className="text-gray-700 ml-7 font-medium">Phone Call</p>
+                                <p className="text-gray-700 ml-7 font-medium">Online session</p>
                             </div>
+                        </div>
+
+                        {/* COUNSELLOR NOTES SECTION */}
+                        <div className="p-4 bg-gradient-to-r from-yellow-50 to-amber-100 rounded-xl border border-amber-200 mb-6">
+                            <div className="flex items-center gap-2 text-amber-700 mb-2">
+                                <span className="font-semibold">Counsellor Notes</span>
+                            </div>
+
+                            <textarea
+                                value={noteDraft}
+                                onChange={(e) => setNoteDraft(e.target.value)}
+                                placeholder="Write your session notes here..."
+                                className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 text-gray-700"
+                                rows={4}
+                            />
+
+                            <div className="flex items-center gap-3 mt-3">
+                                <button
+                                    onClick={() => {
+                                        setSessionNotes((prev) => ({
+                                            ...prev,
+                                            [selectedSession.id]: noteDraft
+                                        }));
+                                    }}
+                                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105"
+                                >
+                                    Save Note
+                                </button>
+
+
+                            </div>
+
+                            {sessionNotes[selectedSession.id] && (
+                                <p className="mt-3 text-sm text-gray-700">
+                                    <span className="font-semibold text-amber-700">Saved Note: </span>
+                                    {sessionNotes[selectedSession.id]}
+                                </p>
+                            )}
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-3">
@@ -369,7 +431,7 @@ export const UpcomingSessions = () => {
                                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                     }`}
                             >
-                                Start Call
+                                Start Session
                             </button>
                             <button
                                 disabled={!selectedSession.isActive}
@@ -378,13 +440,23 @@ export const UpcomingSessions = () => {
                                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                     }`}
                             >
-                                End Call
+                                End Session
                             </button>
                         </div>
 
                     </div>
                 </div>
             )}
+
+            <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
         </div>
     );

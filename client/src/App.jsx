@@ -19,7 +19,10 @@ import { Resources } from './pages/Resources'
 import { MoodAnalytics } from './pages/MoodAnalytics'
 import { JournalPage } from './pages/JournalPage'
 import { SOS } from './pages/SOS'
-import { UpcomingSessions } from './pages/Upcomming'
+import { PreviousSessions } from './pages/PrevSession'
+import { UpcomingSessions } from './pages/Upcoming'
+import { CriticalStudents } from './pages/CriticalStudents'
+import { FeedbackPage } from './pages/Feedback'
 
 export const App = () => {
   return (
@@ -46,7 +49,12 @@ export const App = () => {
         <Route path='/analytics' element={<MoodAnalytics />} />
         <Route path='/journal' element={<JournalPage />} />
         <Route path='/sos' element={<SOS />} />
+
+        {/* counsellor dashboard */}
+        <Route path='/previous-sessions' element={<PreviousSessions />} />
         <Route path='/upcoming-sessions' element={<UpcomingSessions />} />
+        <Route path='/critical-students' element={<CriticalStudents />} />
+        <Route path='/feedback' element={<FeedbackPage />} />
       </Routes>
       <Toaster />
     </div>

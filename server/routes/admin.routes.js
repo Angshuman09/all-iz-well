@@ -6,5 +6,5 @@ import upload from '../lib/multer.js';
 
 const router = express.Router();
 
-router.post('/',upload.single('imageFile'), authMiddleware, isAdmin, adminFormController);
+router.post('/', upload.single('imageFile'), authMiddleware, isAdmin, adminFormController);
 export default router;
